@@ -5,15 +5,9 @@ struct MainView: View {
     @EnvironmentObject var vm: AuthViewModel // EnvironmentObjectを使用する
 
     var body: some View {
-        ZStack{
-            
-            
-            LinearGradient(colors: [Color("test"),Color("Color")], startPoint: .top, endPoint: .bottom)
-                .ignoresSafeArea()
-            
-           
-            VStack {
-
+//        ZStack{
+//
+         
                 TabView {
                     ProfileView()
                         .tabItem {
@@ -25,27 +19,29 @@ struct MainView: View {
                         }
                     DoTaskView()
                         .tabItem {
+                            AddToDoView()
                             Label("DoTask", systemImage: "trash.circle")
                         }
                 }
 //                tabview
             }
             
-//            LinearGradient(colors: [Color("test"),Color("Color")], startPoint: .top, endPoint: .bottom)
-//                .ignoresSafeArea()
+
 //            
-            .background(Gradient(colors: [Color("Blue"),Color("Pink")])).opacity(0.6)
-            
-        }
-        
-    
-        
+//            .background(Gradient(colors: [Color("Blue"),Color("Pink")])).opacity(0.6)
+//            
+//        
+//        
+//    
+//        
 //        let backGroundColor = LinearGradient(gradient: Gradient(colors: [Color.blue, Color.green]), startPoint: .top, endPoint: .bottom)
 
-        
-        }
-    
 }
+//LinearGradient(colors: [Color("test"),Color("Color")], startPoint: .top, endPoint: .bottom)
+//            .ignoresSafeArea()
+        
+    
+
 
 #Preview {
     MainView()

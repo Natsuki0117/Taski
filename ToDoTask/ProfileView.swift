@@ -15,36 +15,56 @@ struct ProfileView: View {
     @State var ShowingAlert = false
     @State var SelectedTask: TaskItem?
     @State var tasks: [TaskItem] = []
+    @State private var AddToDo = false
 
   
     var body: some View {
-      
+        
+        ZStack{
+            
+            LinearGradient(gradient: Gradient(colors: [.white, .pink]), startPoint: .top, endPoint: .bottom)
+                .ignoresSafeArea()
             NavigationView{
-               
+            
                 VStack{
-                CalendarView()
-                    .frame(height: 250) // カレンダーの高さを設定
-                    .padding()
-                
-                    .toolbar{
-                        Button{
-                            isShowingSheet.toggle()
-                        }label: {
-                            Image(systemName: "pencil.circle")
+                    
+                    CalendarView()
+                        .frame(height: 300) // カレンダーの高さを設定
+                        .padding()
+                    
+                    
+                    
+                    List(tasks) { task in
+                        Button {
+                            SelectedTask = task
+                            ShowingAlert = true
+                        } label: {
+                            Text(task.name)
                         }
+                        .frame(maxHeight: .infinity)
+                        
                     }
-                
-                List(tasks) { task in
-                    Button {
-                        SelectedTask = task
-                        ShowingAlert = true
-                    } label: {
-                        Text(task.name)
-                    }
-                    .frame(maxHeight: .infinity)
+                    
+                    .scrollContentBackground(.hidden)
+                    .background(Color.blue.opacity(0.1))
                 }
-
+                
+                .toolbar {
+                    
+                    Button(action: {
+                        AddToDo = true
+                    }) {
+                        Image(systemName: "pencil.and.scribble")
+                    }
+                    
+                }
+                .sheet(isPresented: $AddToDo) {
+                    AddToDoView()
+                }
             }
+            .scrollContentBackground(.hidden)
+            
+               
         }
             .sheet(isPresented: $isShowingSheet) {
                 if let task = SelectedTask {
@@ -53,9 +73,7 @@ struct ProfileView: View {
                     Text("No task selected.")
                 }
             }
-
-
-        
+      
         .alert(SelectedTask?.name ?? "", isPresented: $ShowingAlert, presenting: SelectedTask) { task in
             Button("Do", role: .destructive) {
                 isShowingSheet = true // シートを表示
@@ -68,8 +86,9 @@ struct ProfileView: View {
             tasks = await FirestoreClient.fetchUserWishes()
         }
     }
-
+       
 }
+    
 
 struct CalendarView: UIViewRepresentable {
     func makeUIView(context: Context) -> FSCalendar {

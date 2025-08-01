@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		800AB4912CE4BFE30084B795 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 800AB4902CE4BFE30084B795 /* FSCalendar */; };
 		804F79702D297F0900F25083 /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804F796F2D297F0900F25083 /* TimerView.swift */; };
+		804F79752D2C258600F25083 /* Confetti in Frameworks */ = {isa = PBXBuildFile; productRef = 804F79742D2C258600F25083 /* Confetti */; };
 		807BA0B72C6D218C002EBB9B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807BA0B62C6D218C002EBB9B /* ContentView.swift */; };
 		807BA0B92C6D218F002EBB9B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 807BA0B82C6D218F002EBB9B /* Assets.xcassets */; };
 		807BA0BC2C6D218F002EBB9B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 807BA0BB2C6D218F002EBB9B /* Preview Assets.xcassets */; };
@@ -60,6 +61,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				807BA0F92C75F62B002EBB9B /* FirebaseFirestore in Frameworks */,
+				804F79752D2C258600F25083 /* Confetti in Frameworks */,
 				800AB4912CE4BFE30084B795 /* FSCalendar in Frameworks */,
 				80C9A0102C91B1F800635FB2 /* FirebaseFirestore in Frameworks */,
 				80C9A00E2C91B1F800635FB2 /* FirebaseAuth in Frameworks */,
@@ -143,6 +145,7 @@
 				80C9A00F2C91B1F800635FB2 /* FirebaseFirestore */,
 				80C9A0112C91B1F800635FB2 /* FirebaseStorage */,
 				800AB4902CE4BFE30084B795 /* FSCalendar */,
+				804F79742D2C258600F25083 /* Confetti */,
 			);
 			productName = ToDoTask;
 			productReference = 807BA0B12C6D218C002EBB9B /* ToDoTask.app */;
@@ -175,6 +178,7 @@
 			packageReferences = (
 				80C9A00C2C91B1F800635FB2 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				800AB48F2CE4BFE30084B795 /* XCRemoteSwiftPackageReference "FSCalendar" */,
+				804F79732D2C258600F25083 /* XCRemoteSwiftPackageReference "confetti-swiftui" */,
 			);
 			productRefGroup = 807BA0B22C6D218C002EBB9B /* Products */;
 			projectDirPath = "";
@@ -275,7 +279,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.3;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -332,7 +336,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.3;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -359,6 +363,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -390,6 +395,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -436,6 +442,14 @@
 				minimumVersion = 2.8.4;
 			};
 		};
+		804F79732D2C258600F25083 /* XCRemoteSwiftPackageReference "confetti-swiftui" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ottijp/confetti-swiftui";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.0;
+			};
+		};
 		80C9A00C2C91B1F800635FB2 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
@@ -451,6 +465,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 800AB48F2CE4BFE30084B795 /* XCRemoteSwiftPackageReference "FSCalendar" */;
 			productName = FSCalendar;
+		};
+		804F79742D2C258600F25083 /* Confetti */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 804F79732D2C258600F25083 /* XCRemoteSwiftPackageReference "confetti-swiftui" */;
+			productName = Confetti;
 		};
 		807BA0F62C75F5B4002EBB9B /* FirebaseFirestore */ = {
 			isa = XCSwiftPackageProductDependency;

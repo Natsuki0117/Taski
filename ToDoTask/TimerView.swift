@@ -5,7 +5,6 @@ let timer = Timer
     .publish(every: 1, on: .main, in: .common)
     .autoconnect()
 
-
 // タイマーのビュー
 struct TimerView: View {
     var counter: Int
@@ -16,7 +15,6 @@ struct TimerView: View {
             Text(counterToMinutes())
                 .font(.custom("Avenir Next", size: 60))
                 .fontWeight(.black)
-
         }
     }
 
@@ -37,10 +35,7 @@ struct ProgressTrack: View {
             .overlay(
                 Circle().stroke(Color.black, lineWidth: 15)
             )
-
-        
     }
-    
 }
 
 // 進行状況を示すバー（動く部分）
@@ -66,6 +61,7 @@ struct ProgressBar: View {
             )
     }
 
+
     func completed() -> Bool {
         return progress() == 1
     }
@@ -78,6 +74,7 @@ struct ProgressBar: View {
 // カウントダウン全体のビュー
 struct CountdownView: View {
     @State var counter: Int = 0
+    @State var showConfetti: Bool = false
     var task: TaskItem // デコードされたタスク
     var countTo: Int { task.doTime } // タスクの doTime を使用
 
@@ -89,13 +86,8 @@ struct CountdownView: View {
                 TimerView(counter: counter, countTo: countTo)
             }
         }
-        .onReceive(timer) { _ in
-            if counter < countTo {
-                counter += 1
-            }
         }
     }
-}
 
 //preview
 struct CountdownView_Previews: PreviewProvider {
@@ -106,7 +98,7 @@ struct CountdownView_Previews: PreviewProvider {
             
             Button(action: {
                 
-                print("ボタン押せてるよーーー!")
+                print("ボタン押せてるよーーー")
             },label:{
                 Text("aaa")
                     .frame(width: UIScreen.main.bounds.size.width / 8 * 4,
@@ -121,8 +113,6 @@ struct CountdownView_Previews: PreviewProvider {
 //この辺でボタンの装飾の処理できる、適当につけてる
         }
     }
-    
-
 
 }
 
