@@ -10,31 +10,27 @@ import Firebase
 import FirebaseAuth
 import FSCalendar
 
+
 struct ProfileView: View {
     @State private var isShowingSheet = false
     @State var ShowingAlert = false
     @State var SelectedTask: TaskItem?
     @State var tasks: [TaskItem] = []
     @State private var AddToDo = false
+    @State private var selectedDate: Date = Date() // ★ 追加：カレンダーで選択された日付
 
-  
     var body: some View {
-        
-        ZStack{
-            
+        ZStack {
             LinearGradient(gradient: Gradient(colors: [.white, .pink]), startPoint: .top, endPoint: .bottom)
                 .ignoresSafeArea()
-            NavigationView{
-            
-                VStack{
-                    
-                    CalendarView()
-                        .frame(height: 300) // カレンダーの高さを設定
+
+            NavigationView {
+                VStack {
+                    CalendarView(selectedDate: $selectedDate) // ★ 修正：選択日バインディング渡す
+                        .frame(height: 300)
                         .padding()
-                    
-                    
-                    
-                    List(tasks) { task in
+
+                    List(filteredTasks) { task in // ★ 修正：filteredTasks を使う
                         Button {
                             SelectedTask = task
                             ShowingAlert = true
@@ -42,63 +38,84 @@ struct ProfileView: View {
                             Text(task.name)
                         }
                         .frame(maxHeight: .infinity)
-                        
                     }
-                    
                     .scrollContentBackground(.hidden)
                     .background(Color.blue.opacity(0.1))
                 }
-                
+
                 .toolbar {
-                    
                     Button(action: {
                         AddToDo = true
                     }) {
                         Image(systemName: "pencil.and.scribble")
                     }
-                    
                 }
                 .sheet(isPresented: $AddToDo) {
                     AddToDoView()
                 }
             }
+
             .scrollContentBackground(.hidden)
-            
-               
         }
-            .sheet(isPresented: $isShowingSheet) {
-                if let task = SelectedTask {
-                    TimerView(counter: 0, countTo: task.doTime)
-                } else {
-                    Text("No task selected.")
-                }
+
+        .sheet(isPresented: $isShowingSheet) {
+            if let task = SelectedTask {
+                CountdownView(task: task)
+            } else {
+                Text("No task selected.")
             }
-      
+        }
+
         .alert(SelectedTask?.name ?? "", isPresented: $ShowingAlert, presenting: SelectedTask) { task in
             Button("Do", role: .destructive) {
-                isShowingSheet = true // シートを表示
+                isShowingSheet = true
             }
         } message: { task in
-            Text("\(SelectedTask?.doTime ?? 0) 分")
+            Text("\(task.doTime) 分")
         }
 
         .task {
             tasks = await FirestoreClient.fetchUserWishes()
         }
     }
-       
-}
-    
 
-struct CalendarView: UIViewRepresentable {
-    func makeUIView(context: Context) -> FSCalendar {
-        return FSCalendar()
+    // ★ 追加：選択された日付に一致するタスクだけを返す
+    var filteredTasks: [TaskItem] {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyyMMdd"
+        return tasks.filter {
+            formatter.string(from: $0.dueDate) == formatter.string(from: selectedDate)
+        }
     }
     
-    func updateUIView(_ uiView: FSCalendar, context: Context) {
-        // 必要な設定があればここで行う
+    struct CalendarView: UIViewRepresentable {
+        @Binding var selectedDate: Date // ★ 追加：バインディング
+
+        func makeUIView(context: Context) -> FSCalendar {
+            let calendar = FSCalendar()
+            calendar.delegate = context.coordinator
+            return calendar
+        }
+
+        func updateUIView(_ uiView: FSCalendar, context: Context) {
+            // 特に必要な設定がなければ空でもOK
+        }
+
+        func makeCoordinator() -> Coordinator {
+            Coordinator(self)
+        }
+
+        class Coordinator: NSObject, FSCalendarDelegate {
+            var parent: CalendarView
+
+            init(_ parent: CalendarView) {
+                self.parent = parent
+            }
+
+            func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+                parent.selectedDate = date // ★ カレンダーで選択された日付を親に反映
+            }
+        }
     }
-}
-#Preview {
-    ProfileView()
+
 }

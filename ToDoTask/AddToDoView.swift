@@ -4,117 +4,135 @@
 //
 //  Created by 金井菜津希 on 2024/08/21.
 //
-
 import SwiftUI
 
 struct AddToDoView: View {
     
     @State var title = ""
     @State var dueDate = Date()
-    @State var time = ""
     @State var moodLevel: Int = 5
     @State private var doTime: String = "30"
     
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
-        VStack{
-            Form {
-                // タイトル入力
-                TextField("Title", text: $title)
-                    .textFieldStyle(DefaultTextFieldStyle())
-                
-                // 期限の入力（DatePicker）
-                DatePicker("dueDate", selection: $dueDate, displayedComponents: .date)
-                    .datePickerStyle(GraphicalDatePickerStyle())
-                
-                // タスクの重さをスライダーで選択
-                VStack {
-                    Text("タスクの重さ")
-                        .font(.headline)
-                    
-                    Slider(value: Binding(
-                        get: {
-                            Double(moodLevel)
-                        },
-                        set: { newValue in
-                            moodLevel = Int(newValue.rounded())
+        ZStack {
+            // 背景グラデーション
+            LinearGradient(
+                gradient: Gradient(colors: [Color.pink.opacity(0.3), Color.purple.opacity(0.3)]),
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            .ignoresSafeArea()
+            
+            ScrollView {
+                VStack(spacing: 24) {
+           
+                    Group {
+                        // タイトル入力
+                        TextFieldCard(title: "タイトル", text: $title, placeholder: "例: 数学の宿題")
+
+                        // 期限入力
+                        VStack(alignment: .leading) {
+                            Text("📅 期限を選ぼう")
+                                .font(.headline)
+                            DatePicker("", selection: $dueDate, displayedComponents: .date)
+                                .datePickerStyle(GraphicalDatePickerStyle())
                         }
-                    ), in: 0...10, step: 1)
-                    .padding()
+                        .cardStyle()
+                    }
                     
-                    Text(moodEmoji(for: moodLevel))
-                        .font(.largeTitle)
-                        .padding()
-                    Text("Mood Level: \(moodLevel)")
-                        .font(.headline)
-                        .padding()
+                    // タスクの重さ
+                    VStack(spacing: 8) {
+                        Text("⚖️ タスクの重さ")
+                            .font(.headline)
+                        Slider(value: Binding(
+                            get: { Double(moodLevel) },
+                            set: { moodLevel = Int($0.rounded()) }
+                        ), in: 0...10, step: 1)
+                        
+                        Text(moodEmoji(for: moodLevel))
+                            .font(.system(size: 40))
+                        Text("レベル: \(moodLevel)")
+                            .font(.subheadline)
+                    }
+                    .cardStyle()
+
+                    // かかる時間
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("⏰ かかる時間（分）")
+                            .font(.headline)
+                        TextField("30", text: $doTime)
+                            .keyboardType(.numberPad)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                    }
+                    .cardStyle()
+
+                    // 保存ボタン
+                    Button(action: {
+                        FirestoreClient.add(taskItem: TaskItem(
+                            name: title,
+                            slider: String(moodLevel),
+                            title: "Task",
+                            dueDate: dueDate,
+                            doTime: Int(doTime) ?? 30
+                        ))
+                        dismiss()
+                    }) {
+                        Text("保存する")
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color.purple)
+                            .cornerRadius(20)
+                            .shadow(radius: 5)
+                    }
+                    .padding(.horizontal)
                 }
-                
-                // かかる時間ラベルとdoTime
-                VStack {
-                    Text("かかる時間")
-                        .font(.headline)
-                    
-                    TextField("時間（分単位）", text: $doTime)
-                        .keyboardType(.numberPad)
-                        .textFieldStyle(DefaultTextFieldStyle())
-                        .padding()
-                }
-                
-                // 保存ボタン
-                Button {
-//                     Firestoreにデータを保存
-//                    FirestoreClient.add(taskName: title, sliderValue: Double(moodLevel), taskTitle: "Task", dueDate: dueDate, doTime: doTime)
-                    
-                    FirestoreClient.add(taskItem: TaskItem(name: title, slider:  String(moodLevel),  title: "Task", dueDate: dueDate, doTime: Int(doTime)!))
-                    
-                    print("Title: \(title)")
-                    print("Due Date: \(dueDate)")
-                    print("Mood Level: \(moodLevel)")
-                    print("Do Time: \(doTime)")
-                    
-                    dismiss()
-                    
-                } label: {
-                    Text("保存")
-                        .padding()
-                }
-                .fontWeight(.semibold)
-                .frame(width: 160, height: 48)
-                .foregroundColor(Color(.white))
-                .background(Color(.blue))
-                .cornerRadius(24)
-                .frame(maxWidth: .infinity, alignment: .center)
+                .padding()
             }
-            
-//            .background(Gradient(colors: [Color("Pink"),Color("purple")])).opacity(0.6)
-            
         }
     }
     
-    // Moodレベルに応じた絵文字を返す関数
+    // 絵文字で気分を表現
     func moodEmoji(for level: Int) -> String {
         switch level {
-        case 0...2:
-            return "☺️"
-        case 3...4:
-            return "😀"
-        case 5...6:
-            return "😐"
-        case 7...8:
-            return "😖"
-        case 9...10:
-            return "😤"
-        default:
-            return "😐"
+        case 0...2: return "😍"
+        case 3...4: return "😊"
+        case 5...6: return "😐"
+        case 7...8: return "😣"
+        case 9...10: return "😤"
+        default: return "❓"
         }
     }
 }
 
-#Preview{
-    AddToDoView()
-    
+// 共通のカードスタイル修飾子
+extension View {
+    func cardStyle() -> some View {
+        self
+            .padding()
+            .background(Color.white)
+            .cornerRadius(20)
+            .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 5)
+            .padding(.horizontal)
+    }
 }
 
+// テキストフィールド用の小コンポーネント
+struct TextFieldCard: View {
+    var title: String
+    @Binding var text: String
+    var placeholder: String
 
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("🖋️ \(title)")
+                .font(.headline)
+            TextField(placeholder, text: $text)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+        }
+        .cardStyle()
+    }
+}

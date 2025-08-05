@@ -23,7 +23,7 @@ struct TaskItem: Codable, Identifiable {
         self.slider = slider
         self.title = title
         self.dueDate = dueDate
-        self.doTime = doTime
+        self.doTime = doTime 
     }
 }
 
