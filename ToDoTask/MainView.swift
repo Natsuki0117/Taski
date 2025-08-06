@@ -13,28 +13,20 @@ struct MainView: View {
                     .tabItem {
                         Label("Main", systemImage: "party.popper.fill")
                     }
-                ProfileView()
+                HomeView()
                     .tabItem {
                         Label("Profile", systemImage: "person.crop.circle")
                     }
-                DoTaskView()
+                HomeView()
                     .tabItem {
                         AddToDoView()
                         Label("Profile", systemImage: "person.crop.circle")
                     }
             }
+            
             //                tabview
         }
-        
-        
-        //
-        //            .background(Gradient(colors: [Color("Blue"),Color("Pink")])).opacity(0.6)
-        //
-        //
-        //
-        //
-        //
-        //        let backGroundColor = LinearGradient(gradient: Gradient(colors: [Color.blue, Color.green]), startPoint: .top, endPoint: .bottom)
+        .background(Gradient(colors: [Color("Blue"),Color("Pink")])).opacity(0.6)
         
     }
     //LinearGradient(colors: [Color("test"),Color("Color")], startPoint: .top, endPoint: .bottom)

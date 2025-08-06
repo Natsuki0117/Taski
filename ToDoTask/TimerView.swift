@@ -13,10 +13,17 @@ struct CountdownView: View {
 
     var body: some View {
         ZStack {
-            LinearGradient(gradient: Gradient(colors: [.white, .pink.opacity(0.2)]),
-                           startPoint: .top,
-                           endPoint: .bottom)
-                .ignoresSafeArea()
+            
+            MeshGradient(width: 3, height: 3, points: [
+              [0, 0],   [0.5, 0],   [1.0, 0],
+              [0, 0.5], [0.5, 0.5], [1.0, 0.5],
+              [0, 1.0], [0.5, 1.0], [1.0, 1.0]
+            ], colors: [
+                .color1, .color1, .color1,
+                .color1, .color2, .color2,
+              .color2, .color2, .color2
+            ])
+            .ignoresSafeArea()
 
             VStack(spacing: 40) {
                 ZStack {
@@ -29,7 +36,7 @@ struct CountdownView: View {
                     Circle()
                         .trim(from: 0, to: CGFloat(counter) / CGFloat(countTo))
                         .stroke(
-                            AngularGradient(gradient: Gradient(colors: [.blue, .pink]),
+                            AngularGradient(gradient: Gradient(colors: [.timer2, .timer]),
                                             center: .center),
                             style: StrokeStyle(lineWidth: 15, lineCap: .round)
                         )

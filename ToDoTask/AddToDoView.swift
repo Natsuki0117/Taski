@@ -18,11 +18,15 @@ struct AddToDoView: View {
     var body: some View {
         ZStack {
             // 背景グラデーション
-            LinearGradient(
-                gradient: Gradient(colors: [Color.pink.opacity(0.3), Color.purple.opacity(0.3)]),
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
+            MeshGradient(width: 3, height: 3, points: [
+              [0, 0],   [0.5, 0],   [1.0, 0],
+              [0, 0.5], [0.5, 0.5], [1.0, 0.5],
+              [0, 1.0], [0.5, 1.0], [1.0, 1.0]
+            ], colors: [
+                .color1, .color1, .color1,
+                .color1, .color2, .color2,
+              .color2, .color2, .color2
+            ])
             .ignoresSafeArea()
             
             ScrollView {
@@ -84,7 +88,7 @@ struct AddToDoView: View {
                             .foregroundColor(.white)
                             .padding()
                             .frame(maxWidth: .infinity)
-                            .background(Color.purple)
+                            .background(Color.test1)
                             .cornerRadius(20)
                             .shadow(radius: 5)
                     }

@@ -20,7 +20,6 @@
 		807BA0E92C738FD9002EBB9B /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807BA0E82C738FD9002EBB9B /* SignUpView.swift */; };
 		807BA0EB2C74F374002EBB9B /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807BA0EA2C74F374002EBB9B /* ProfileView.swift */; };
 		807BA0ED2C74F562002EBB9B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807BA0EC2C74F562002EBB9B /* HomeView.swift */; };
-		807BA0EF2C74FEC1002EBB9B /* DoTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807BA0EE2C74FEC1002EBB9B /* DoTaskView.swift */; };
 		807BA0F12C750DF7002EBB9B /* AddToDoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807BA0F02C750DF7002EBB9B /* AddToDoView.swift */; };
 		807BA0F52C75F1A0002EBB9B /* TaskItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807BA0F42C75F1A0002EBB9B /* TaskItem.swift */; };
 		807BA0F72C75F5B4002EBB9B /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 807BA0F62C75F5B4002EBB9B /* FirebaseFirestore */; };
@@ -47,7 +46,6 @@
 		807BA0E82C738FD9002EBB9B /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		807BA0EA2C74F374002EBB9B /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		807BA0EC2C74F562002EBB9B /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
-		807BA0EE2C74FEC1002EBB9B /* DoTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoTaskView.swift; sourceTree = "<group>"; };
 		807BA0F02C750DF7002EBB9B /* AddToDoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddToDoView.swift; sourceTree = "<group>"; };
 		807BA0F42C75F1A0002EBB9B /* TaskItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskItem.swift; sourceTree = "<group>"; };
 		807BA1032C7F1F42002EBB9B /* FirebaseAuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAuthManager.swift; sourceTree = "<group>"; };
@@ -102,7 +100,6 @@
 				807BA0E82C738FD9002EBB9B /* SignUpView.swift */,
 				807BA0EC2C74F562002EBB9B /* HomeView.swift */,
 				807BA0EA2C74F374002EBB9B /* ProfileView.swift */,
-				807BA0EE2C74FEC1002EBB9B /* DoTaskView.swift */,
 				804F796F2D297F0900F25083 /* TimerView.swift */,
 				807BA0F02C750DF7002EBB9B /* AddToDoView.swift */,
 				807BA0F42C75F1A0002EBB9B /* TaskItem.swift */,
@@ -214,7 +211,6 @@
 				807BA0D52C6D233C002EBB9B /* AuthViewModel.swift in Sources */,
 				807BA0ED2C74F562002EBB9B /* HomeView.swift in Sources */,
 				807BA1082C7F2EC5002EBB9B /* FirestoreClient.swift in Sources */,
-				807BA0EF2C74FEC1002EBB9B /* DoTaskView.swift in Sources */,
 				807BA1042C7F1F42002EBB9B /* FirebaseAuthManager.swift in Sources */,
 				807BA0F52C75F1A0002EBB9B /* TaskItem.swift in Sources */,
 				807BA0F12C750DF7002EBB9B /* AddToDoView.swift in Sources */,

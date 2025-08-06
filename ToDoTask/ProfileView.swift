@@ -20,16 +20,25 @@ struct ProfileView: View {
     @State private var selectedDate: Date = Date() // ★ 追加：カレンダーで選択された日付
 
     var body: some View {
-        ZStack {
-            LinearGradient(gradient: Gradient(colors: [.white, .pink]), startPoint: .top, endPoint: .bottom)
+        
+        NavigationStack {
+            ZStack{
+                MeshGradient(width: 3, height: 3, points: [
+                    [0, 0],   [0.5, 0],   [1.0, 0],
+                    [0, 0.5], [0.5, 0.5], [1.0, 0.5],
+                    [0, 1.0], [0.5, 1.0], [1.0, 1.0]
+                ], colors: [
+                    .test, .test, .test,
+                    .test, .test1, .test1,
+                    .test1, .test1, .test1
+                ])
                 .ignoresSafeArea()
-
-            NavigationView {
+                
                 VStack {
                     CalendarView(selectedDate: $selectedDate) // ★ 修正：選択日バインディング渡す
                         .frame(height: 300)
-                        .padding()
-
+                        .cardStyle()
+                    
                     List(filteredTasks) { task in // ★ 修正：filteredTasks を使う
                         Button {
                             SelectedTask = task
@@ -37,45 +46,51 @@ struct ProfileView: View {
                         } label: {
                             Text(task.name)
                         }
-                        .frame(maxHeight: .infinity)
                     }
-                    .scrollContentBackground(.hidden)
-                    .background(Color.blue.opacity(0.1))
+                    .cardStyle()
+                    //                    .scrollContentBackground(.hidden)
+                    //                                        .background(Color.blue.opacity(0.1))
+                    //                    ↑list
+                    
                 }
-
+                
                 .toolbar {
                     Button(action: {
                         AddToDo = true
                     }) {
                         Image(systemName: "pencil.and.scribble")
                     }
+                    .accentColor(Color.gray)
                 }
                 .sheet(isPresented: $AddToDo) {
                     AddToDoView()
                 }
             }
-
+            
             .scrollContentBackground(.hidden)
-        }
-
-        .sheet(isPresented: $isShowingSheet) {
-            if let task = SelectedTask {
-                CountdownView(task: task)
-            } else {
-                Text("No task selected.")
+            
+            
+            
+            
+            .sheet(isPresented: $isShowingSheet) {
+                if let task = SelectedTask {
+                    CountdownView(task: task)
+                } else {
+                    Text("No task selected.")
+                }
             }
-        }
-
-        .alert(SelectedTask?.name ?? "", isPresented: $ShowingAlert, presenting: SelectedTask) { task in
-            Button("Do", role: .destructive) {
-                isShowingSheet = true
+            
+            .alert(SelectedTask?.name ?? "", isPresented: $ShowingAlert, presenting: SelectedTask) { task in
+                Button("Do", role: .destructive) {
+                    isShowingSheet = true
+                }
+            } message: { task in
+                Text("\(task.doTime) 分")
             }
-        } message: { task in
-            Text("\(task.doTime) 分")
-        }
-
-        .task {
-            tasks = await FirestoreClient.fetchUserWishes()
+            
+            .task {
+                tasks = await FirestoreClient.fetchUserWishes()
+            }
         }
     }
 
@@ -117,5 +132,15 @@ struct ProfileView: View {
             }
         }
     }
+}
 
+extension View {
+    func cardStyle1() -> some View {
+        self
+            .padding()
+            .background(Color.white)
+            .cornerRadius(20)
+            .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 5)
+            .padding(.horizontal)
+    }
 }
