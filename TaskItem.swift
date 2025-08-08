@@ -15,15 +15,17 @@ struct TaskItem: Codable, Identifiable {
     var title: String
     var dueDate: Date
     var doTime: Int
+    var rank: String
     
-    init(id: String? = nil, userId: String = "", name: String, slider: String, title: String, dueDate: Date, doTime: Int) {
+    init(id: String? = nil, userId: String = "", name: String, slider: String, title: String, dueDate: Date, doTime: Int, rank: String) {
         self.id = id
         self.userId = userId
         self.name = name
         self.slider = slider
         self.title = title
         self.dueDate = dueDate
-        self.doTime = doTime 
+        self.doTime = doTime
+        self.rank = rank
     }
 }
 

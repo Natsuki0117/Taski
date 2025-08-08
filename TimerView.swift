@@ -13,18 +13,18 @@ struct CountdownView: View {
 
     var body: some View {
         ZStack {
-            
-            MeshGradient(width: 3, height: 3, points: [
-              [0, 0],   [0.5, 0],   [1.0, 0],
-              [0, 0.5], [0.5, 0.5], [1.0, 0.5],
-              [0, 1.0], [0.5, 1.0], [1.0, 1.0]
-            ], colors: [
-                .color1, .color1, .color1,
-                .color1, .color2, .color2,
-              .color2, .color2, .color2
-            ])
-            .ignoresSafeArea()
 
+            MeshGradient(width: 3, height: 3, points: [
+                            [0, 0],   [0.5, 0],   [1.0, 0],
+                            [0, 0.5], [0.5, 0.5], [1.0, 0.5],
+                            [0, 1.0], [0.5, 1.0], [1.0, 1.0]
+                        ], colors: [
+                            .color1, .color1, .color1,
+                            .color1, .color1, .color2,
+                            .color2, .color2, .color2
+                        ])
+                        .ignoresSafeArea()
+            
             VStack(spacing: 40) {
                 ZStack {
                     // トラック
