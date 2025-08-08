@@ -9,10 +9,19 @@ import SwiftUI
 
 struct MeshView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        
+        MeshGradient(width: 3, height: 3, points: [
+                        [0, 0],   [0.5, 0],   [1.0, 0],
+                        [0, 0.5], [0.5, 0.5], [1.0, 0.5],
+                        [0, 1.0], [0.5, 1.0], [1.0, 1.0]
+                    ], colors: [
+                        .color1, .color1, .color1,
+                        .color1, .color1, .color2,
+                        .color2, .color2, .color2
+                    ])
+                    .ignoresSafeArea()
+        
+        
     }
 }
 
-#Preview {
-    MeshView()
-}

@@ -17,15 +17,6 @@ class AuthViewModel: ObservableObject {
         }
     }
 
-//    func anonymousSignIn() {
-//        Task {
-//            do {
-//                try await Auth.auth().signInAnonymously()
-//            } catch {
-//                print(error.localizedDescription)
-//            }
-//        }
-//    }
 
     func signIn(email: String, password: String) {
         Task {

@@ -14,7 +14,7 @@ class FirestoreClient {
     static var tasks: CollectionReference = Firestore.firestore().collection("tasks")
     
     // データをFirestoreに追加する関数
-    static func add(taskItem: Environment.TaskItem) {
+    static func add(taskItem: TaskItem) {
         Task {
             guard let userId = Auth.auth().currentUser?.uid else {
                 print("ユーザーがログインしていません")

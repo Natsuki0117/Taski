@@ -1,5 +1,5 @@
 {
-  "originHash" : "7e81c3c67030a1d0ddf4c64b9d8e0721bb9d6dc7edc267057c4ac9c2054fb17c",
+  "originHash" : "57f602c2d8dcf902cdd0f86b104dcfa96de47c0f601e0b0c4c591113d40b7b2c",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -20,6 +20,15 @@
       }
     },
     {
+      "identity" : "appauth-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/openid/AppAuth-iOS.git",
+      "state" : {
+        "revision" : "2781038865a80e2c425a1da12cc1327bcd56501f",
+        "version" : "1.7.6"
+      }
+    },
+    {
       "identity" : "confetti-swiftui",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ottijp/confetti-swiftui",
@@ -29,12 +38,30 @@
       }
     },
     {
+      "identity" : "facebook-ios-sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/facebook/facebook-ios-sdk.git",
+      "state" : {
+        "revision" : "619d1772808425faa010d92293b26eeb9bc1d630",
+        "version" : "17.4.0"
+      }
+    },
+    {
       "identity" : "firebase-ios-sdk",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/firebase/firebase-ios-sdk.git",
       "state" : {
         "revision" : "1fc52ab0e172e7c5a961f975a76c2611f4f22852",
         "version" : "11.2.0"
+      }
+    },
+    {
+      "identity" : "firebaseui-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/firebase/firebaseui-ios",
+      "state" : {
+        "branch" : "Main",
+        "revision" : "a863e58ee994ed490a0ac554efb29c7c9871617c"
       }
     },
     {
@@ -65,6 +92,15 @@
       }
     },
     {
+      "identity" : "googlesignin-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/google/GoogleSignIn-iOS",
+      "state" : {
+        "revision" : "a7965d134c5d3567026c523e0a8a583f73b62b0d",
+        "version" : "7.1.0"
+      }
+    },
+    {
       "identity" : "googleutilities",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/GoogleUtilities.git",
@@ -89,6 +125,15 @@
       "state" : {
         "revision" : "a2ab612cb980066ee56d90d60d8462992c07f24b",
         "version" : "3.5.0"
+      }
+    },
+    {
+      "identity" : "gtmappauth",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/google/GTMAppAuth.git",
+      "state" : {
+        "revision" : "5d7d66f647400952b1758b230e019b07c0b4b22a",
+        "version" : "4.1.1"
       }
     },
     {
@@ -125,6 +170,15 @@
       "state" : {
         "revision" : "540318ecedd63d883069ae7f1ed811a2df00b6ac",
         "version" : "2.4.0"
+      }
+    },
+    {
+      "identity" : "sdwebimage",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDWebImage/SDWebImage.git",
+      "state" : {
+        "revision" : "b62cb63bf4ed1f04c961a56c9c6c9d5ab8524ec6",
+        "version" : "5.21.1"
       }
     },
     {

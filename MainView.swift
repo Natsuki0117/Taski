@@ -17,7 +17,7 @@ struct MainView: View {
                     .tabItem {
                         Label("Profile", systemImage: "person.crop.circle")
                     }
-                AddToDoView()
+                AccountView()
                     .tabItem {
                         
                         Label("Profile", systemImage: "person.crop.circle")
