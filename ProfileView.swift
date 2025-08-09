@@ -26,17 +26,7 @@ struct ProfileView: View {
         
         NavigationStack {
             ZStack{
-                MeshGradient(width: 3, height: 3, points: [
-                    [0, 0],   [0.5, 0],   [1.0, 0],
-                    [0, 0.5], [0.5, 0.5], [1.0, 0.5],
-                    [0, 1.0], [0.5, 1.0], [1.0, 1.0]
-                ], colors: [
-                    .test, .test, .test,
-                    .test, .test1, .test1,
-                    .test1, .test1, .test1
-                ])
-                .ignoresSafeArea()
-                
+               MeshView()
                 VStack {
                     CalendarView(selectedDate: $selectedDate, tasks: tasks) // ★ 修正：選択日バインディング渡す
                         .frame(height: 300)
@@ -145,7 +135,7 @@ struct ProfileView: View {
             }
             
             func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
-                        let count = parent.tasks.filter {
+                _ = parent.tasks.filter {
                             Calendar.current.isDate($0.dueDate, inSameDayAs: date)
                         }
                         return 1

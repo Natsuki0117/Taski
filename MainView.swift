@@ -6,7 +6,6 @@ struct MainView: View {
     
     var body: some View {
         ZStack{
-            //
             
             TabView {
                 ProfileView()
@@ -17,16 +16,15 @@ struct MainView: View {
                     .tabItem {
                         Label("Profile", systemImage: "person.crop.circle")
                     }
-                AccountView()
+                SignupView()
                     .tabItem {
                         
                         Label("Profile", systemImage: "person.crop.circle")
                     }
             }
-            
-            //                tabview
+        
         }
-        .background(Gradient(colors: [Color("Blue"),Color("Pink")])).opacity(0.6)
+        
         
     }
     

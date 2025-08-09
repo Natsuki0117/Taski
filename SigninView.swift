@@ -11,52 +11,83 @@ struct SigninView: View {
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var isPresented: Bool = false
+    @State private var showPassword = false
     
     
     @StateObject var vm = AuthViewModel()
     
     var body: some View {
-        NavigationStack {
-            ZStack{
-                MeshView()
-                VStack{
-                    Text("メールアドレス")
-                    TextField("Email", text: $email)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding()
-                    Text("パスワード")
-                    SecureField("Password", text: $password)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding()
-                    
-           
-                    Button("ログイン") {
-                        vm.signUp(email: email, password: password)
-                    }
-                    
-                    Button(action: {
-                                isPresented = true //trueにしないと画面遷移されない
-                            }) {
-                                Text("NextViewへ")
+            NavigationStack {
+                ZStack{
+                    MeshView()
+                    VStack{
+                        Spacer().frame(height: 60)
+                        Text("SignIn")
+                            .accentColor(Color.test)
+                            .font(.system(.title, design: .serif))
+                        HStack {
+                            Image(systemName: "person")
+                                .foregroundColor(.secondary)
+                            TextField("Username",text: $email)
+                        } .cardStyle()
+                            .background(Capsule().fill(Color.white));
+                           
+                        HStack {
+                            Image(systemName: "lock")
+                                .foregroundColor(.secondary)
+                            if showPassword {
+                                TextField("Password",
+                                          text: $password)}
+                            else {
+                                SecureField("Password",text: $password)
                             }
-                            .fullScreenCover(isPresented: $isPresented) { //フルスクリーンの画面遷移
-                                SignupView()
+                            Button(action: { self.showPassword.toggle()}) {
+                                Image(systemName: "eye")
+                                    .foregroundColor(.secondary)
                             }
-                    
-                    if let errorMessage = vm.errorMessage {
-                        Text("登録できませんでした")
-                    }
-                }
-            }
-            .navigationBarHidden(true)
-                        .fullScreenCover(isPresented: $vm.isAuthenticated) {
-                            MainView()
                         }
+                        .cardStyle()
+                        .background(Capsule().fill(Color.white))
+                        
+                        .padding(.bottom, 50)
+                        Button("LogIn"){
+                            vm.signUp(email: email, password: password)
+                        }
+                        .accentColor(Color.white)
+                        .padding()
+                        .background(Color.test)
+                        .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 5)
+                        .cornerRadius(26)
+                        
+                        .padding(.bottom, 40)
+                     
+                        if let errorMessage = vm.errorMessage {
+                            Text("登録できませんでした")
+                        }
+                     
+                    }
+                    .cardStyle()
+                   
+                }
+                .navigationBarHidden(true)
+                .fullScreenCover(isPresented: $vm.isAuthenticated) {
+                    MainView()
+                }
+                
+            }
+        }
+        
+        func cardStyle() -> some View {
+            self
+                .foregroundColor(Color.white.opacity(0.2))
+                .padding()
+                .background(Color.white)
+                .cornerRadius(20)
+                .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 5)
+                .padding(.horizontal)
         }
     }
-}
-
 #Preview {
-    SignupView()
+    SigninView()
 }
 

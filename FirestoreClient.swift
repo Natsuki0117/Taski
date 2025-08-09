@@ -16,7 +16,7 @@ class FirestoreClient {
     // データをFirestoreに追加する関数
     static func add(taskItem: TaskItem) {
         Task {
-            guard let userId = Auth.auth().currentUser?.uid else {
+            guard (Auth.auth().currentUser?.uid) != nil else {
                 print("ユーザーがログインしていません")
                 return
             }
@@ -60,7 +60,7 @@ class FirestoreClient {
     
     
     static func fetchUserWishes() async -> [TaskItem] {
-        guard let userId = Auth.auth().currentUser?.uid else {
+        guard (Auth.auth().currentUser?.uid) != nil else {
             print("ユーザーがログインしていません")
             return []
         }
