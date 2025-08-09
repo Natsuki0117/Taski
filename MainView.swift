@@ -1,6 +1,7 @@
 import SwiftUI
 import FirebaseAuth // 必要なインポート
 
+
 struct MainView: View {
     @EnvironmentObject var vm: AuthViewModel // EnvironmentObjectを使用する
     
@@ -12,6 +13,7 @@ struct MainView: View {
                     .tabItem {
                         Label("Main", systemImage: "party.popper.fill")
                     }
+                
                 AddToDoView()
                     .tabItem {
                         Label("Profile", systemImage: "person.crop.circle")

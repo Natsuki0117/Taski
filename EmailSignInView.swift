@@ -6,23 +6,20 @@
 //
 
 import Foundation
-import SwiftUI
-@main
+
 struct EmailSignInApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @StateObject var vm = AuthViewModel()
     
     var body: some Scene {
         WindowGroup {
-            Group{
             if vm.isAuthenticated {
                 MainView()
-                   
+                    .environmentObject(vm)
             } else {
                 SigninView()
+                    .environmentObject(vm)
             }
-            }
-            .environmentObject(vm)
         }
     }
 }

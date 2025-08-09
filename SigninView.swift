@@ -7,21 +7,23 @@
 
 import SwiftUI
 
+
+
 struct SigninView: View {
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var isPresented: Bool = false
     @State private var showPassword = false
+    @EnvironmentObject var vm: AuthViewModel
     
-    
-    @StateObject var vm = AuthViewModel()
+
     
     var body: some View {
             NavigationStack {
                 ZStack{
                     MeshView()
                     VStack{
-                        Spacer().frame(height: 60)
+                        Spacer().frame(height: 80)
                         Text("SignIn")
                             .accentColor(Color.test)
                             .font(.system(.title, design: .serif))
@@ -51,7 +53,7 @@ struct SigninView: View {
                         
                         .padding(.bottom, 50)
                         Button("LogIn"){
-                            vm.signUp(email: email, password: password)
+                            vm.signIn(email: email, password: password)
                         }
                         .accentColor(Color.white)
                         .padding()
@@ -70,9 +72,13 @@ struct SigninView: View {
                    
                 }
                 .navigationBarHidden(true)
-                .fullScreenCover(isPresented: $vm.isAuthenticated) {
+               
+                if vm.isAuthenticated {
                     MainView()
+                } else {
+                    SigninView()
                 }
+
                 
             }
         }

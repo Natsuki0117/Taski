@@ -12,9 +12,7 @@ struct SignupView: View {
     @State private var password: String = ""
     @State private var isPresented: Bool = false
     @State private var showPassword = false
-    
-    
-    @StateObject var vm = AuthViewModel()
+    @EnvironmentObject var vm: AuthViewModel
     
     var body: some View {
         NavigationStack {
