@@ -14,7 +14,7 @@ import FSCalendar
 import UIKit
 
 
-struct ProfileView: View {
+struct CalendarView: View {
     @State private var isShowingSheet = false
     @State var ShowingAlert = false
     @State var SelectedTask: TaskItem?
@@ -140,6 +140,8 @@ struct ProfileView: View {
                         }
                         return 1
                     }
+            
+        
         }
         
     }
