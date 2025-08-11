@@ -9,16 +9,12 @@ struct MainView: View {
         ZStack{
             
             TabView {
-                ProfileView()
+                CalendarView()
                     .tabItem {
                         Label("Main", systemImage: "party.popper.fill")
                     }
                 
-                AddToDoView()
-                    .tabItem {
-                        Label("Profile", systemImage: "person.crop.circle")
-                    }
-                SignupView()
+                AccountView()
                     .tabItem {
                         
                         Label("Profile", systemImage: "person.crop.circle")

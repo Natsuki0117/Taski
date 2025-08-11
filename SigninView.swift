@@ -15,6 +15,7 @@ struct SigninView: View {
     @State private var isPresented: Bool = false
     @State private var showPassword = false
     @EnvironmentObject var vm: AuthViewModel
+    @State private var Signup = false
     
 
     
@@ -55,11 +56,24 @@ struct SigninView: View {
                         Button("LogIn"){
                             vm.signIn(email: email, password: password)
                         }
+                       
                         .accentColor(Color.white)
                         .padding()
                         .background(Color.test)
                         .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 5)
                         .cornerRadius(26)
+                        
+                        Button("Signup"){
+                            self.Signup.toggle()
+                        }
+                            .sheet(isPresented: $Signup) {
+                                SignupView()
+                            }
+                            .accentColor(Color.white)
+                            .padding()
+                            .background(Color.test)
+                            .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 5)
+                            .cornerRadius(26)
                         
                         .padding(.bottom, 40)
                      
@@ -73,13 +87,7 @@ struct SigninView: View {
                 }
                 .navigationBarHidden(true)
                
-                if vm.isAuthenticated {
-                    MainView()
-                } else {
-                    SigninView()
-                }
 
-                
             }
         }
         
@@ -87,11 +95,12 @@ struct SigninView: View {
             self
                 .foregroundColor(Color.white.opacity(0.2))
                 .padding()
-                .background(Color.white)
+                .background(.ultraThinMaterial)
                 .cornerRadius(20)
                 .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 5)
                 .padding(.horizontal)
         }
+   
     }
 #Preview {
     SigninView()

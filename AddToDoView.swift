@@ -83,8 +83,8 @@ struct AddToDoView: View {
                             slider: String(moodLevel),
                             title: "Task",
                             dueDate: dueDate,
-                            doTime: Int(doTime) ?? 30,
-                            rank: rank
+                            doTime: Int(doTime) ?? 30
+//                            rank: rank
                         ))
                         dismiss()
                     }) {
@@ -138,7 +138,7 @@ extension View {
     func cardStyle() -> some View {
         self
             .padding()
-            .background(Color.white)
+            .background(.ultraThinMaterial)
             .cornerRadius(20)
             .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 5)
             .padding(.horizontal)

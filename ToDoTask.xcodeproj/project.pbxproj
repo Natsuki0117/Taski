@@ -10,13 +10,12 @@
 		800AB4912CE4BFE30084B795 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 800AB4902CE4BFE30084B795 /* FSCalendar */; };
 		804F79702D297F0900F25083 /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804F796F2D297F0900F25083 /* TimerView.swift */; };
 		804F79752D2C258600F25083 /* Confetti in Frameworks */ = {isa = PBXBuildFile; productRef = 804F79742D2C258600F25083 /* Confetti */; };
-		807BA0B72C6D218C002EBB9B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807BA0B62C6D218C002EBB9B /* ContentView.swift */; };
 		807BA0B92C6D218F002EBB9B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 807BA0B82C6D218F002EBB9B /* Assets.xcassets */; };
 		807BA0BC2C6D218F002EBB9B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 807BA0BB2C6D218F002EBB9B /* Preview Assets.xcassets */; };
 		807BA0D52C6D233C002EBB9B /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807BA0D42C6D233C002EBB9B /* AuthViewModel.swift */; };
 		807BA0D72C6D236D002EBB9B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807BA0D62C6D236D002EBB9B /* AppDelegate.swift */; };
 		807BA0E02C6D28B0002EBB9B /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807BA0DF2C6D28B0002EBB9B /* MainView.swift */; };
-		807BA0EB2C74F374002EBB9B /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807BA0EA2C74F374002EBB9B /* ProfileView.swift */; };
+		807BA0EB2C74F374002EBB9B /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807BA0EA2C74F374002EBB9B /* CalendarView.swift */; };
 		807BA0F12C750DF7002EBB9B /* AddToDoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807BA0F02C750DF7002EBB9B /* AddToDoView.swift */; };
 		807BA0F52C75F1A0002EBB9B /* TaskItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807BA0F42C75F1A0002EBB9B /* TaskItem.swift */; };
 		807BA0F72C75F5B4002EBB9B /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 807BA0F62C75F5B4002EBB9B /* FirebaseFirestore */; };
@@ -42,14 +41,13 @@
 /* Begin PBXFileReference section */
 		804F796F2D297F0900F25083 /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
 		807BA0B12C6D218C002EBB9B /* ToDoTask.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoTask.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		807BA0B62C6D218C002EBB9B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		807BA0B82C6D218F002EBB9B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		807BA0BB2C6D218F002EBB9B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		807BA0D42C6D233C002EBB9B /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		807BA0D62C6D236D002EBB9B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		807BA0DF2C6D28B0002EBB9B /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		807BA0E32C6D2A77002EBB9B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		807BA0EA2C74F374002EBB9B /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		807BA0EA2C74F374002EBB9B /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		807BA0F02C750DF7002EBB9B /* AddToDoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddToDoView.swift; sourceTree = "<group>"; };
 		807BA0F42C75F1A0002EBB9B /* TaskItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskItem.swift; sourceTree = "<group>"; };
 		807BA1052C7F20D6002EBB9B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -89,7 +87,7 @@
 			isa = PBXGroup;
 			children = (
 				807BA0B32C6D218C002EBB9B /* ToDoTask */,
-				807BA0EA2C74F374002EBB9B /* ProfileView.swift */,
+				807BA0EA2C74F374002EBB9B /* CalendarView.swift */,
 				808DEB972E466E30008AF99C /* MeshView.swift */,
 				808DEB8F2E4665D7008AF99C /* EditorView.swift */,
 				808DEBAA2E46790E008AF99C /* ImagePicker .swift */,
@@ -100,7 +98,6 @@
 				807BA0F02C750DF7002EBB9B /* AddToDoView.swift */,
 				807BA0D42C6D233C002EBB9B /* AuthViewModel.swift */,
 				804F796F2D297F0900F25083 /* TimerView.swift */,
-				807BA0B62C6D218C002EBB9B /* ContentView.swift */,
 				807BA0F42C75F1A0002EBB9B /* TaskItem.swift */,
 				807BA0DF2C6D28B0002EBB9B /* MainView.swift */,
 				808DEBB22E47A840008AF99C /* AccountView.swift */,
@@ -240,8 +237,7 @@
 				807BA0F12C750DF7002EBB9B /* AddToDoView.swift in Sources */,
 				808DEBAD2E47924D008AF99C /* SigninView.swift in Sources */,
 				808DEB902E4665D7008AF99C /* EditorView.swift in Sources */,
-				807BA0EB2C74F374002EBB9B /* ProfileView.swift in Sources */,
-				807BA0B72C6D218C002EBB9B /* ContentView.swift in Sources */,
+				807BA0EB2C74F374002EBB9B /* CalendarView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
