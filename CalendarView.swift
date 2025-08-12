@@ -5,7 +5,6 @@
 //  Created by 金井菜津希 on 2024/08/21.
 //
 
-
 import SwiftUI
 import Firebase
 import FirebaseAuth
@@ -31,34 +30,53 @@ struct CalendarView: View {
                         .cardStyle1()
                     
                     
-                    
-                    List(filteredTasks) { task in
-                        Button {
-                            selectedTask = task
-                            showingAlert = true
-                        } label: {
+                    List {
+                        ForEach(filteredTasks) { task in
                             HStack {
-                                Text(task.rank) // ← ここは計算プロパティ
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text(task.name)
+                                        .font(.headline)
+                                    Text("\(task.doTime)分 • \(task.dueDate.formatted(.dateTime.month().day()))")
+                                        .font(.caption)
+                                        .foregroundColor(.secondary)
+                                }
+                                Spacer()
+                                Text(task.rank)
                                     .font(.caption)
                                     .bold()
-//                                    .background(Color.)
-//                                    .padding()
-//                                    .glassCardWithBorder(color: task.rankColor)
-                                    .cornerRadius(20)
-                                    
-                                Text(task.name)
-                                    .foregroundColor(.primary)
+                                    .padding(.vertical, 6)
+                                    .padding(.horizontal, 14)
+                                    .background(
+                                        LinearGradient(
+                                            gradient: Gradient(colors: rankGradient(task.rank)),
+                                            startPoint: .leading,
+                                            endPoint: .trailing
+                                        )
+                                    )
+                                    .foregroundColor(.white)
+                                    .clipShape(Capsule())
+                                    .shadow(color: rankShadowColor(task.rank).opacity(0.4), radius: 4, x: 0, y: 2)
                             }
-                            .listRowInsets(EdgeInsets())
+                            .frame(maxWidth: .infinity)
+                            .listRowBackground(Color.clear)
+                            .glassCardStyle()
+                            .onTapGesture {
+                                selectedTask = task
+                                showingAlert = true
+                            }
                         }
-                       
+                        .onAppear {
+                            UITableView.appearance().backgroundColor = .clear
+                            UITableViewCell.appearance().backgroundColor = .clear
+                        }
                     }
-                    .glassCardStyle()
-                    .listStyle(.plain)
-//                    .cardStyle1()
-                  
-//                    .background(.ultraThinMaterial)
                     
+//                    .listRowBackground(Color.clear)
+                    .listRowSeparator(.hidden)
+                    .listStyle(.plain)
+                    .scrollContentBackground(.hidden)
+                    .background(Color.clear)
+
                     
                 }
                 .toolbar {
@@ -93,15 +111,56 @@ struct CalendarView: View {
             }
         }
     }
-    
-    // 選択日のタスクだけを返す
+
+
     var filteredTasks: [TaskItem] {
-        tasks.filter {
-            Calendar.current.isDate($0.dueDate, inSameDayAs: selectedDate)
+        let rankOrder: [String: Int] = ["S": 0, "A": 1, "B": 2, "C": 3]
+        return tasks
+            .filter {
+                Calendar.current.isDate($0.dueDate, inSameDayAs: selectedDate)
+            }
+            .sorted {
+                let r1 = rankOrder[$0.rank] ?? 99
+                let r2 = rankOrder[$1.rank] ?? 99
+                if r1 != r2 {
+                    return r1 < r2
+                } else {
+                    return $0.dueDate < $1.dueDate
+                }
+            }
+    }
+
+    func rankGradient(_ rank: String) -> [Color] {
+        switch rank {
+        case "S": return [Color.purple, Color.pink]
+        case "A": return [Color.blue, Color.cyan]
+        case "B": return [Color.green, Color.mint]
+        case "C": return [Color.orange, Color.yellow]
+        default: return [Color.gray, Color.gray.opacity(0.7)]
         }
     }
-}
 
+    func rankShadowColor(_ rank: String) -> Color {
+        switch rank {
+        case "S": return .pink
+        case "A": return .cyan
+        case "B": return .green
+        case "C": return .orange
+        default: return .gray
+        }
+    }
+
+//    // ランクカラー
+//    func rankColor(_ rank: String) -> Color {
+//        switch rank {
+//        case "S": return .red
+//        case "A": return .orange
+//        case "B": return .yellow
+//        case "C": return .green
+//        default: return .gray
+//        }
+//    }
+}
 
 struct CalendarWrapper: UIViewRepresentable {
     @Binding var selectedDate: Date
@@ -144,26 +203,9 @@ extension View {
     func glassCardStyle() -> some View {
         self
             .padding()
-            .background(.ultraThinMaterial) // ガラスっぽいBlur背景
+            .background(.ultraThinMaterial)
             .cornerRadius(20)
             .shadow(color: Color.black.opacity(0.2), radius: 10, x: 0, y: 5)
             .padding(.horizontal)
     }
 }
-
-
-extension View {
-    func glassCardWithBorder(color: Color) -> some View {
-        self
-            .padding()
-            .background(.ultraThinMaterial)
-            .overlay(
-                RoundedRectangle(cornerRadius: 20)
-                    .stroke(color, lineWidth: 3) // 枠色を渡す
-            )
-            .cornerRadius(20)
-            .shadow(color: color.opacity(0.3), radius: 8, x: 0, y: 4)
-            .padding(.horizontal)
-    }
-}
-

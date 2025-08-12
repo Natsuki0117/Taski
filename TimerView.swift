@@ -7,6 +7,7 @@ struct CountdownView: View {
     @State private var counter: Int = 0
     @State private var timerCancellable: AnyCancellable?
     @State private var isFinished: Bool = false
+    @State private var showCompletionCheck = false
 
     var task: TaskItem
     var countTo: Int { task.doTime * 60 } // 分 → 秒
@@ -51,10 +52,37 @@ struct CountdownView: View {
                 }
 
                 if isFinished {
-                    Text("おつかれさま！")
-                        .font(.title2)
-                        .foregroundColor(.purple)
+//                    .alert("タスクは終わりましたか？", isPresented: $showCompletionCheck) {
+//                                        Button("はい") {
+//                                        
+//                                            dismiss()
+//                                        }
+//                                        Button("いいえ", role: .cancel) {
+//                                          
+//                                            dismiss()
+//                                        }
+//                                }
                 }
+                
+//                Button("時間内に終わった") {
+//                    markTaskAsCompleted(task)
+//                    dismiss()
+//                }
+//                .alert("タスクは終わりましたか？", isPresented: $showCompletionCheck) {
+//                    Button("はい") {
+//                        markTaskAsCompleted(task)
+//                        dismiss()
+//                    }
+//                    Button("いいえ", role: .cancel) {
+//                        markTaskAsFailed(task)
+//                        dismiss()
+//                    }
+//                }
+//                .frame(width: 180, height: 48)
+//                .background(Color.blue)
+//                .foregroundColor(.white)
+//                .cornerRadius(24)
+//                .shadow(radius: 5)
 
                 Button(action: {
                     dismiss()
