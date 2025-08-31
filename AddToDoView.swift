@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import FirebaseAuth
+import FirebaseFirestore
 
 struct AddToDoView: View {
     
@@ -17,6 +19,7 @@ struct AddToDoView: View {
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
+     
         ZStack {
             MeshGradient(width: 3, height: 3, points: [
                             [0, 0],   [0.5, 0],   [1.0, 0],
@@ -37,21 +40,26 @@ struct AddToDoView: View {
                     Group {
                         // タイトル入力
                         TextFieldCard(title: "タイトル", text: $title, placeholder: "例: 数学の宿題")
-
+                            .foregroundColor(.gray)
                         // 期限入力
                         VStack(alignment: .leading) {
                             Text("📅 期限を選ぼう")
+                                .foregroundColor(.gray)
                                 .font(.headline)
                             DatePicker("", selection: $dueDate, displayedComponents: .date)
                                 .datePickerStyle(GraphicalDatePickerStyle())
                         }
                         .cardStyle()
                     }
-                    
+                                        
                     // タスクの重さ
                     VStack(spacing: 8) {
-                        Text("⚖️ タスクの重さ")
-                            .font(.headline)
+                       
+                            Text("⚖️ タスクの重さ")
+                                .foregroundColor(.gray)
+                                .font(.headline)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        
                         Slider(value: Binding(
                             get: { Double(moodLevel) },
                             set: { moodLevel = Int($0.rounded()) }
@@ -60,6 +68,7 @@ struct AddToDoView: View {
                         Text(moodEmoji(for: moodLevel))
                             .font(.system(size: 40))
                         Text("レベル: \(moodLevel)")
+                            .foregroundColor(.gray)
                             .font(.subheadline)
                     }
                     .cardStyle()
@@ -68,25 +77,33 @@ struct AddToDoView: View {
                     VStack(alignment: .leading, spacing: 8) {
                         Text("⏰ かかる時間（分）")
                             .font(.headline)
+                            .foregroundColor(.gray)
                         TextField("30", text: $doTime)
+                            .foregroundColor(.gray)
                             .keyboardType(.numberPad)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                     }
                     .cardStyle()
-
-                    // 保存ボタン
                     Button(action: {
-                        let rank = calculateRank(slider: moodLevel, dueDate: dueDate)
+                        let client = FirestoreClient()
                         
-                        FirestoreClient.add(taskItem: TaskItem(
+                        // Firestore に保存するタスク
+                        let newTask = TaskItem(
+                            userId: Auth.auth().currentUser?.uid ?? "",
                             name: title,
                             slider: String(moodLevel),
-                            title: "Task",
+                            title: title,
                             dueDate: dueDate,
                             doTime: Int(doTime) ?? 30
-//                            rank: rank
-                        ))
-                        dismiss()
+                        )
+                        
+                        client.addTask(task: newTask) { error in
+                            if let error = error {
+                                print("Error adding task: \(error)")
+                            } else {
+                                dismiss()
+                            }
+                        }
                     }) {
                         Text("保存する")
                             .font(.headline)
@@ -96,8 +113,7 @@ struct AddToDoView: View {
                             .background(Color.blue)
                             .cornerRadius(20)
                             .shadow(radius: 5)
-                    }
-                    .padding(.horizontal)
+                    }.padding(.horizontal)
                 }
                 .padding()
             }
@@ -130,18 +146,6 @@ struct AddToDoView: View {
         default:
             return "B"
         }
-    }
-}
-
-// 共通のカードスタイル修飾子
-extension View {
-    func cardStyle() -> some View {
-        self
-            .padding()
-            .background(.ultraThinMaterial)
-            .cornerRadius(20)
-            .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 5)
-            .padding(.horizontal)
     }
 }
 

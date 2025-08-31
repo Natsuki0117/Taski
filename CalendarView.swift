@@ -15,19 +15,19 @@ struct CalendarView: View {
     @State private var isShowingSheet = false
     @State var showingAlert = false
     @State var selectedTask: TaskItem?
-    @State var tasks: [TaskItem] = []
     @State private var addToDo = false
     @State private var selectedDate: Date = Date()
     @State private var currentDate = Date()
+    @EnvironmentObject var taskStore: TaskStore 
 
     var body: some View {
         NavigationStack {
             ZStack {
                 MeshView()
                 VStack {
-                    CalendarWrapper(selectedDate: $selectedDate, tasks: tasks)
+                    CalendarWrapper(selectedDate: $selectedDate, tasks: taskStore.tasks)
                         .frame(height: 300)
-                        .cardStyle1()
+                        .cardStyle()
                     
                     
                     List {
@@ -65,19 +65,15 @@ struct CalendarView: View {
                                 showingAlert = true
                             }
                         }
-                        .onAppear {
-                            UITableView.appearance().backgroundColor = .clear
-                            UITableViewCell.appearance().backgroundColor = .clear
-                        }
+
                     }
-                    
-//                    .listRowBackground(Color.clear)
-                    .listRowSeparator(.hidden)
                     .listStyle(.plain)
                     .scrollContentBackground(.hidden)
-                    .background(Color.clear)
+                    .onAppear {
+                        UITableView.appearance().backgroundColor = .clear
+                        UITableViewCell.appearance().backgroundColor = .clear
+                    }
 
-                    
                 }
                 .toolbar {
                     Button(action: { addToDo = true }) {
@@ -92,7 +88,7 @@ struct CalendarView: View {
             .scrollContentBackground(.hidden)
             .sheet(isPresented: $isShowingSheet) {
                 if let task = selectedTask {
-                    CountdownView(task: task)
+                    TimerView(task: task)
                 }
             }
             .alert(selectedTask?.name ?? "", isPresented: $showingAlert, presenting: selectedTask) { task in
@@ -102,9 +98,14 @@ struct CalendarView: View {
             } message: { task in
                 Text("\(task.doTime) 分")
             }
+            
             .task {
-                tasks = await FirestoreClient.fetchUserWishes()
+                // とりあえず空配列で初期化
+                taskStore.tasks = []
             }
+//            .task {
+//                taskStore.tasks = await TaskItem.TaskItem()
+//            }
             // 毎分更新してランクを再計算
             .onReceive(Timer.publish(every: 60, on: .main, in: .common).autoconnect()) { _ in
                 currentDate = Date()
@@ -114,21 +115,13 @@ struct CalendarView: View {
 
 
     var filteredTasks: [TaskItem] {
-        let rankOrder: [String: Int] = ["S": 0, "A": 1, "B": 2, "C": 3]
-        return tasks
-            .filter {
-                Calendar.current.isDate($0.dueDate, inSameDayAs: selectedDate)
-            }
-            .sorted {
-                let r1 = rankOrder[$0.rank] ?? 99
-                let r2 = rankOrder[$1.rank] ?? 99
-                if r1 != r2 {
-                    return r1 < r2
-                } else {
-                    return $0.dueDate < $1.dueDate
-                }
-            }
+        taskStore.tasks.filter {
+            !$0.isCompleted &&
+            Calendar.current.isDate($0.dueDate, inSameDayAs: selectedDate)
+        }
     }
+
+
 
     func rankGradient(_ rank: String) -> [Color] {
         switch rank {
@@ -149,17 +142,6 @@ struct CalendarView: View {
         default: return .gray
         }
     }
-
-//    // ランクカラー
-//    func rankColor(_ rank: String) -> Color {
-//        switch rank {
-//        case "S": return .red
-//        case "A": return .orange
-//        case "B": return .yellow
-//        case "C": return .green
-//        default: return .gray
-//        }
-//    }
 }
 
 struct CalendarWrapper: UIViewRepresentable {
@@ -185,17 +167,6 @@ struct CalendarWrapper: UIViewRepresentable {
         func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
             parent.selectedDate = date
         }
-    }
-}
-
-extension View {
-    func cardStyle1() -> some View {
-        self
-            .padding()
-            .background(.ultraThinMaterial)
-            .cornerRadius(20)
-            .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 5)
-            .padding(.horizontal)
     }
 }
 

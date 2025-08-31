@@ -5,90 +5,74 @@
 //  Created by 金井菜津希 on 2025/08/09.
 //
 //
-//import SwiftUI
-//
-//import SwiftUI
-//import PhotosUI
-//
-//struct EditorView: View {
-//    @ObservedObject var viewModel: AccountViewModel
-//    @Binding var isPresented: Bool
-//    
-//    @State private var tempName: String = ""
-//    @State private var tempImage: UIImage? = nil
-//    @State private var isShowingImagePicker = false
-//    
-//    var body: some View {
-//        ZStack{
-//            MeshGradient(width: 3, height: 3, points: [
-//                            [0, 0],   [0.5, 0],   [1.0, 0],
-//                            [0, 0.5], [0.5, 0.5], [1.0, 0.5],
-//                            [0, 1.0], [0.5, 1.0], [1.0, 1.0]
-//                        ], colors: [
-//                            .test, .test, .test,
-//                            .test, .test, .test1,
-//                            .test1, .test1, .test1
-//                        ])
-//                        .ignoresSafeArea()
-//            
-//            
-//            NavigationStack {
-//                VStack(spacing: 30) {
-//                    Group {
-//                        if let image = tempImage {
-//                            Image(uiImage: image)
-//                                .resizable()
-//                                .scaledToFill()
-//                        } else {
-//                            Image(systemName: "person.crop.circle.fill")
-//                                .resizable()
-//                                .scaledToFit()
-//                                .foregroundColor(.gray)
-//                        }
-//                    }
-//                    .frame(width: 140, height: 140)
-//                    .clipShape(Circle())
-//                    .overlay(Circle().stroke(Color.blue, lineWidth: 3))
-//                    .onTapGesture {
-//                        isShowingImagePicker = true
-//                    }
-//                    
-//                    VStack(alignment: .leading) {
-//                        Text("名前")
-//                            .font(.headline)
-//                        TextField("名前を入力してください", text: $tempName)
-//                            .textFieldStyle(RoundedBorderTextFieldStyle())
-//                    }
-//                    .padding(.horizontal)
-//                    
-//                    Spacer()
-//                }
-//                .padding()
-//                .navigationTitle("プロフィール編集")
-//                .toolbar {
-//                    ToolbarItem(placement: .confirmationAction) {
-//                        Button("保存") {
-//                            viewModel.displayName = tempName
-//                            viewModel.selectedImage = tempImage
-//                            isPresented = false
-//                        }
-//                    }
-//                    ToolbarItem(placement: .cancellationAction) {
-//                        Button("キャンセル") {
-//                            isPresented = false
-//                        }
-//                    }
-//                }
-//            }
-//     
-//                .onAppear {
-//                    tempName = viewModel.displayName
-//                    tempImage = viewModel.selectedImage
-//                }
-//                .sheet(isPresented: $isShowingImagePicker) {
-//                    ImagePicker(selectedImage: $tempImage)
-//                }
-//            }
-//        }
-//    }
-//
+import SwiftUI
+import Firebase
+import FirebaseAuth
+import FirebaseStorage
+
+struct EditorView: View {
+    @EnvironmentObject var vm: AuthViewModel
+    @Environment(\.dismiss) private var dismiss
+    @State private var name: String = ""
+    @State private var selectedImage: UIImage?
+    @State private var showPicker = false
+    
+    var body: some View {
+        NavigationView {
+            VStack(spacing: 20) {
+                Button {
+                    showPicker = true
+                } label: {
+                    if let selectedImage = selectedImage {
+                        Image(uiImage: selectedImage)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 120, height: 120)
+                            .clipShape(Circle())
+                    } else if let url = URL(string: vm.currentUser?.iconURL ?? ""), !(vm.currentUser?.iconURL ?? "").isEmpty {
+                        AsyncImage(url: url) { image in
+                            image.resizable()
+                                .scaledToFill()
+                                .frame(width: 120, height: 120)
+                                .clipShape(Circle())
+                        } placeholder: {
+                            Circle().fill(Color.gray.opacity(0.3))
+                                .frame(width: 120, height: 120)
+                        }
+                    } else {
+                        Circle()
+                            .fill(Color.gray.opacity(0.3))
+                            .frame(width: 120, height: 120)
+                            .overlay(Text("画像選択").foregroundColor(.white))
+                    }
+                }
+                .sheet(isPresented: $showPicker) {
+                    ImagePicker(image: $selectedImage)
+                }
+                
+                TextField("名前を入力", text: $name)
+                    .padding()
+                    .background(.ultraThinMaterial)
+                    .cornerRadius(10)
+                    .foregroundColor(.primary)
+                
+                Button("保存") {
+                    let newName = name.isEmpty ? vm.displayName : name
+                    vm.updateUser(name: newName, iconImage: selectedImage)
+                    dismiss()
+                }
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(Color.blue)
+                .foregroundColor(.white)
+                .cornerRadius(10)
+            }
+            .padding()
+            .onAppear {
+                name = vm.displayName
+            }
+            .navigationTitle("プロフィール編集")
+            .navigationBarTitleDisplayMode(.inline)
+        }
+    }
+}

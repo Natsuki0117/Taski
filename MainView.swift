@@ -3,13 +3,15 @@ import FirebaseAuth // 必要なインポート
 
 
 struct MainView: View {
-    @EnvironmentObject var vm: AuthViewModel // EnvironmentObjectを使用する
+    @EnvironmentObject var vm: AuthViewModel
+    @StateObject var taskStore = TaskStore()
     
     var body: some View {
         ZStack{
             
             TabView {
                 CalendarView()
+                    .environmentObject(taskStore)
                     .tabItem {
                         Label("Main", systemImage: "party.popper.fill")
                     }

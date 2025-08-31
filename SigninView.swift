@@ -7,102 +7,76 @@
 
 import SwiftUI
 
-
-
 struct SigninView: View {
+    @EnvironmentObject var authVM: AuthViewModel
     @State private var email: String = ""
     @State private var password: String = ""
-    @State private var isPresented: Bool = false
+    @State private var showSignup = false
     @State private var showPassword = false
-    @EnvironmentObject var vm: AuthViewModel
-    @State private var Signup = false
-    
-
     
     var body: some View {
-            NavigationStack {
-                ZStack{
-                    MeshView()
-                    VStack{
-                        Spacer().frame(height: 80)
-                        Text("SignIn")
-                            .accentColor(Color.test)
-                            .font(.system(.title, design: .serif))
-                        HStack {
-                            Image(systemName: "person")
-                                .foregroundColor(.secondary)
-                            TextField("Username",text: $email)
-                        } .cardStyle()
-                            .background(Capsule().fill(Color.white));
-                           
-                        HStack {
-                            Image(systemName: "lock")
-                                .foregroundColor(.secondary)
-                            if showPassword {
-                                TextField("Password",
-                                          text: $password)}
-                            else {
-                                SecureField("Password",text: $password)
-                            }
-                            Button(action: { self.showPassword.toggle()}) {
-                                Image(systemName: "eye")
-                                    .foregroundColor(.secondary)
-                            }
-                        }
-                        .cardStyle()
-                        .background(Capsule().fill(Color.white))
-                        
-                        .padding(.bottom, 50)
-                        Button("LogIn"){
-                            vm.signIn(email: email, password: password)
-                        }
-                       
-                        .accentColor(Color.white)
-                        .padding()
-                        .background(Color.test)
-                        .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 5)
-                        .cornerRadius(26)
-                        
-                        Button("Signup"){
-                            self.Signup.toggle()
-                        }
-                            .sheet(isPresented: $Signup) {
-                                SignupView()
-                            }
-                            .accentColor(Color.white)
-                            .padding()
-                            .background(Color.test)
-                            .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 5)
-                            .cornerRadius(26)
-                        
-                        .padding(.bottom, 40)
-                     
-                        if let errorMessage = vm.errorMessage {
-                            Text("登録できませんでした")
-                        }
-                     
-                    }
-                    .cardStyle()
-                   
+        ZStack{
+            MeshView()
+            
+            VStack(spacing: 20) {
+                Text("LogIn")
+                    .font(.system(.title, design: .serif))
+                    .font(.largeTitle)
+                    .foregroundColor(.primary)
+                
+                HStack {
+                    Image(systemName: "person")
+                        .foregroundColor(.secondary)
+                    TextField("Email", text: $email)
+                        .autocapitalization(.none)
+                        .disableAutocorrection(true)
                 }
-                .navigationBarHidden(true)
-               
-
+                .foregroundColor(.primary)
+                .cardStyle()
+                
+                HStack {
+                    Image(systemName: "lock")
+                        .foregroundColor(.secondary)
+                    if showPassword {
+                        TextField("Password", text: $password)
+                            .autocapitalization(.none)
+                            .disableAutocorrection(true)
+                    } else {
+                        SecureField("Password", text: $password)
+                    }
+                    Button(action: { self.showPassword.toggle() }) {
+                        Image(systemName: "eye")
+                            .foregroundColor(.secondary)
+                    }
+                }
+                .foregroundColor(.primary)
+                .cardStyle()
+                .padding(.bottom, 30)
+                
+                
+                if let error = authVM.errorMessage {
+                    Text(error)
+                        .foregroundColor(.red)
+                }
+                
+                Button("ログイン") {
+                    authVM.signIn(email: email, password: password)
+                }
+                .buttonStyle(.borderedProminent)
+                .foregroundColor(.white)
+                
+                Button("新規登録") {
+                    authVM.errorMessage = nil // 遷移前にエラーをクリア
+                    showSignup.toggle()
+                }
+                .sheet(isPresented: $showSignup) {
+                    SignupView()
+                        .environmentObject(authVM)
+                }
+                .buttonStyle(.borderedProminent)
+                .foregroundColor(.white)
             }
+            .cardStyle()
         }
-        
-        func cardStyle() -> some View {
-            self
-                .foregroundColor(Color.white.opacity(0.2))
-                .padding()
-                .background(.ultraThinMaterial)
-                .cornerRadius(20)
-                .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 5)
-                .padding(.horizontal)
-        }
-   
     }
-#Preview {
-    SigninView()
 }
-

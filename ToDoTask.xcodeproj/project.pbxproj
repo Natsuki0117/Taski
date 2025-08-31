@@ -33,6 +33,9 @@
 		808DEBAF2E4799F2008AF99C /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808DEBAE2E4799F2008AF99C /* SignupView.swift */; };
 		808DEBB12E47A7B8008AF99C /* EmailSignInApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808DEBB02E47A7B8008AF99C /* EmailSignInApp.swift */; };
 		808DEBB32E47A840008AF99C /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808DEBB22E47A840008AF99C /* AccountView.swift */; };
+		808DEBB52E4CE0B4008AF99C /* TaskStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808DEBB42E4CE0B4008AF99C /* TaskStore.swift */; };
+		808DEBB72E4CE607008AF99C /* InitialSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808DEBB62E4CE607008AF99C /* InitialSetupView.swift */; };
+		808DEBB92E643621008AF99C /* PieChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808DEBB82E643621008AF99C /* PieChartView.swift */; };
 		80C9A00E2C91B1F800635FB2 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 80C9A00D2C91B1F800635FB2 /* FirebaseAuth */; };
 		80C9A0102C91B1F800635FB2 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 80C9A00F2C91B1F800635FB2 /* FirebaseFirestore */; };
 		80C9A0122C91B1F800635FB2 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 80C9A0112C91B1F800635FB2 /* FirebaseStorage */; };
@@ -59,6 +62,9 @@
 		808DEBAE2E4799F2008AF99C /* SignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
 		808DEBB02E47A7B8008AF99C /* EmailSignInApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailSignInApp.swift; sourceTree = "<group>"; };
 		808DEBB22E47A840008AF99C /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
+		808DEBB42E4CE0B4008AF99C /* TaskStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskStore.swift; sourceTree = "<group>"; };
+		808DEBB62E4CE607008AF99C /* InitialSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialSetupView.swift; sourceTree = "<group>"; };
+		808DEBB82E643621008AF99C /* PieChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,10 +103,13 @@
 				808DEBAE2E4799F2008AF99C /* SignupView.swift */,
 				807BA0F02C750DF7002EBB9B /* AddToDoView.swift */,
 				807BA0D42C6D233C002EBB9B /* AuthViewModel.swift */,
+				808DEBB62E4CE607008AF99C /* InitialSetupView.swift */,
 				804F796F2D297F0900F25083 /* TimerView.swift */,
 				807BA0F42C75F1A0002EBB9B /* TaskItem.swift */,
 				807BA0DF2C6D28B0002EBB9B /* MainView.swift */,
 				808DEBB22E47A840008AF99C /* AccountView.swift */,
+				808DEBB82E643621008AF99C /* PieChartView.swift */,
+				808DEBB42E4CE0B4008AF99C /* TaskStore.swift */,
 				808DEBB02E47A7B8008AF99C /* EmailSignInApp.swift */,
 				807BA0B22C6D218C002EBB9B /* Products */,
 			);
@@ -223,16 +232,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				808DEBB92E643621008AF99C /* PieChartView.swift in Sources */,
 				808DEBAF2E4799F2008AF99C /* SignupView.swift in Sources */,
 				808DEBB12E47A7B8008AF99C /* EmailSignInApp.swift in Sources */,
 				808DEBAB2E46790E008AF99C /* ImagePicker .swift in Sources */,
 				808DEB982E466E30008AF99C /* MeshView.swift in Sources */,
 				808DEBB32E47A840008AF99C /* AccountView.swift in Sources */,
 				804F79702D297F0900F25083 /* TimerView.swift in Sources */,
+				808DEBB72E4CE607008AF99C /* InitialSetupView.swift in Sources */,
 				807BA0D72C6D236D002EBB9B /* AppDelegate.swift in Sources */,
 				807BA0E02C6D28B0002EBB9B /* MainView.swift in Sources */,
 				807BA0D52C6D233C002EBB9B /* AuthViewModel.swift in Sources */,
 				807BA1082C7F2EC5002EBB9B /* FirestoreClient.swift in Sources */,
+				808DEBB52E4CE0B4008AF99C /* TaskStore.swift in Sources */,
 				807BA0F52C75F1A0002EBB9B /* TaskItem.swift in Sources */,
 				807BA0F12C750DF7002EBB9B /* AddToDoView.swift in Sources */,
 				808DEBAD2E47924D008AF99C /* SigninView.swift in Sources */,

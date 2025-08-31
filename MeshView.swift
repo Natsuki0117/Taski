@@ -25,3 +25,18 @@ struct MeshView: View {
     }
 }
 
+import SwiftUI
+
+extension View {
+    func cardStyle() -> some View {
+        self
+            .foregroundColor(Color.white.opacity(0.2))
+            .padding()
+            .background(.ultraThinMaterial)
+            .cornerRadius(20)
+            .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 5)
+            .padding(.horizontal)
+    }
+}
+
+
