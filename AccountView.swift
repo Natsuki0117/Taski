@@ -12,62 +12,66 @@ struct AccountView: View {
     @State private var showEditor = false
     
     var body: some View {
-        NavigationView {
-            VStack(spacing: 20) {
-                if let user = authVM.currentUser {
-                    // アイコン
-                    if let url = URL(string: user.iconURL), !user.iconURL.isEmpty {
-                        AsyncImage(url: url) { image in
-                            image.resizable()
-                                .scaledToFill()
-                                .frame(width: 120, height: 120)
-                                .clipShape(Circle())
-                        } placeholder: {
-                            Circle().fill(Color.gray.opacity(0.3))
+        ZStack{
+            MeshView()
+            NavigationView {
+                
+                VStack(spacing: 20) {
+                    if let user = authVM.currentUser {
+                        // アイコン
+                        if let url = URL(string: user.iconURL), !user.iconURL.isEmpty {
+                            AsyncImage(url: url) { image in
+                                image.resizable()
+                                    .scaledToFill()
+                                    .frame(width: 120, height: 120)
+                                    .clipShape(Circle())
+                            } placeholder: {
+                                Circle().fill(Color.gray.opacity(0.3))
+                                    .frame(width: 120, height: 120)
+                            }
+                        } else {
+                            Circle()
+                                .fill(Color.gray.opacity(0.3))
                                 .frame(width: 120, height: 120)
                         }
+                        
+                        // 名前
+                        Text(user.name)
+                            .font(.title2)
+                            .padding(.top, 8)
+                        
+                        // 編集ボタン
+                        Button("プロフィール編集") {
+                            showEditor.toggle()
+                        }
+                        .sheet(isPresented: $showEditor) {
+                            EditorView()
+                                .environmentObject(authVM)
+                        }
+                        
+                        Divider()
+                        
+                        // 終了タスクのランク別円グラフ
+                        if !taskStore.tasks.isEmpty {
+                            PieChartView(data: rankDistribution(tasks: taskStore.tasks))
+                                .frame(height: 200)
+                                .padding()
+                        }
+                        
+                        Spacer()
+                        
+                        Button("ログアウト") {
+                            authVM.logout()
+                        }
+                        .padding(.bottom, 30)
                     } else {
-                        Circle()
-                            .fill(Color.gray.opacity(0.3))
-                            .frame(width: 120, height: 120)
+                        Text("ログインしていません")
                     }
-                    
-                    // 名前
-                    Text(user.name)
-                        .font(.title2)
-                        .padding(.top, 8)
-                    
-                    // 編集ボタン
-                    Button("プロフィール編集") {
-                        showEditor.toggle()
-                    }
-                    .sheet(isPresented: $showEditor) {
-                        EditorView()
-                            .environmentObject(authVM)
-                    }
-                    
-                    Divider()
-                    
-                    // 終了タスクのランク別円グラフ
-                    if !taskStore.tasks.isEmpty {
-                        PieChartView(data: rankDistribution(tasks: taskStore.tasks))
-                            .frame(height: 200)
-                            .padding()
-                    }
-                    
-                    Spacer()
-                    
-                    Button("ログアウト") {
-                        authVM.logout()
-                    }
-                    .padding(.bottom, 30)
-                } else {
-                    Text("ログインしていません")
                 }
-            }
-            .padding()
-            .onAppear {
-                taskStore.fetchTasks()
+                .padding()
+                .onAppear {
+                    taskStore.fetchTasks()
+                }
             }
         }
     }
