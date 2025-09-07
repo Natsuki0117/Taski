@@ -39,6 +39,7 @@
 		80C9A00E2C91B1F800635FB2 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 80C9A00D2C91B1F800635FB2 /* FirebaseAuth */; };
 		80C9A0102C91B1F800635FB2 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 80C9A00F2C91B1F800635FB2 /* FirebaseFirestore */; };
 		80C9A0122C91B1F800635FB2 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 80C9A0112C91B1F800635FB2 /* FirebaseStorage */; };
+		80F088E02E6D2FD000EB49BF /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F088DF2E6D2FD000EB49BF /* TestView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -65,6 +66,7 @@
 		808DEBB42E4CE0B4008AF99C /* TaskStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskStore.swift; sourceTree = "<group>"; };
 		808DEBB62E4CE607008AF99C /* InitialSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialSetupView.swift; sourceTree = "<group>"; };
 		808DEBB82E643621008AF99C /* PieChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartView.swift; sourceTree = "<group>"; };
+		80F088DF2E6D2FD000EB49BF /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 				808DEBAE2E4799F2008AF99C /* SignupView.swift */,
 				807BA0F02C750DF7002EBB9B /* AddToDoView.swift */,
 				807BA0D42C6D233C002EBB9B /* AuthViewModel.swift */,
+				80F088DF2E6D2FD000EB49BF /* TestView.swift */,
 				808DEBB62E4CE607008AF99C /* InitialSetupView.swift */,
 				804F796F2D297F0900F25083 /* TimerView.swift */,
 				807BA0F42C75F1A0002EBB9B /* TaskItem.swift */,
@@ -247,6 +250,7 @@
 				808DEBB52E4CE0B4008AF99C /* TaskStore.swift in Sources */,
 				807BA0F52C75F1A0002EBB9B /* TaskItem.swift in Sources */,
 				807BA0F12C750DF7002EBB9B /* AddToDoView.swift in Sources */,
+				80F088E02E6D2FD000EB49BF /* TestView.swift in Sources */,
 				808DEBAD2E47924D008AF99C /* SigninView.swift in Sources */,
 				808DEB902E4665D7008AF99C /* EditorView.swift in Sources */,
 				807BA0EB2C74F374002EBB9B /* CalendarView.swift in Sources */,
@@ -387,6 +391,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ToDoTask/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "プロフィール画像を選択するために写真ライブラリにアクセスします";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -419,6 +424,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ToDoTask/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "プロフィール画像を選択するために写真ライブラリにアクセスします";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

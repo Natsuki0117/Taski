@@ -1,6 +1,6 @@
 //
 //  EmailSignInVIew.swift
-//  ToDoTask
+//  Taski
 //
 //  Created by 金井菜津希 on 2025/08/10.
 //
@@ -8,36 +8,35 @@ import SwiftUI
 import FirebaseStorage
 
 @main
-struct EmailSignInApp: App {
+struct Taski: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    @StateObject var vm = AuthViewModel()
+    @StateObject var authVM = AuthViewModel()
     @StateObject var taskStore = TaskStore()
-    
+
     var body: some Scene {
         WindowGroup {
-            ZStack {
-           
-                MeshView()
-                    .ignoresSafeArea()
-                
-                Group {
-                    if vm.isAuthenticated {
-                        if vm.displayName.isEmpty && vm.iconData == nil {
-                            InitialSetupView()
-                                .environmentObject(vm)
+
+                ZStack {
+                    MeshView()
+                        .ignoresSafeArea()
+                    
+                    if authVM.isAuthenticated {
+                        if authVM.currentUser?.name.isEmpty ?? true || authVM.currentUser?.iconURL.isEmpty ?? true {
+                            SigninView()
+                                .environmentObject(authVM)
                                 .environmentObject(taskStore)
                         } else {
                             MainView()
+                                .environmentObject(authVM)
                                 .environmentObject(taskStore)
                         }
                     } else {
-                        SigninView()
-                            .environmentObject(vm)
+                        SignupView()
+                            .environmentObject(authVM)
                             .environmentObject(taskStore)
                     }
                 }
-                .environmentObject(vm)
-            }
+            
         }
     }
 }
