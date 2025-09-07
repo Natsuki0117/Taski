@@ -15,23 +15,29 @@ struct EmailSignInApp: App {
     
     var body: some Scene {
         WindowGroup {
-            Group {
-                if vm.isAuthenticated {
-                    if vm.displayName.isEmpty && vm.iconData == nil {
-                        InitialSetupView()
+            ZStack {
+           
+                MeshView()
+                    .ignoresSafeArea()
+                
+                Group {
+                    if vm.isAuthenticated {
+                        if vm.displayName.isEmpty && vm.iconData == nil {
+                            InitialSetupView()
+                                .environmentObject(vm)
+                                .environmentObject(taskStore)
+                        } else {
+                            MainView()
+                                .environmentObject(taskStore)
+                        }
+                    } else {
+                        SigninView()
                             .environmentObject(vm)
                             .environmentObject(taskStore)
-                    } else {
-                        MainView()
-                            .environmentObject(taskStore)
                     }
-                } else {
-                    SigninView()
-                        .environmentObject(vm)
-                        .environmentObject(taskStore)
                 }
+                .environmentObject(vm)
             }
-            .environmentObject(vm)
         }
     }
 }

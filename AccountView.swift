@@ -13,8 +13,7 @@ struct AccountView: View {
     
     var body: some View {
         ZStack{
-            MeshView()
-            NavigationView {
+            NavigationStack {
                 
                 VStack(spacing: 20) {
                     if let user = authVM.currentUser {
@@ -72,6 +71,7 @@ struct AccountView: View {
                 .onAppear {
                     taskStore.fetchTasks()
                 }
+                .appBackground()
             }
         }
     }

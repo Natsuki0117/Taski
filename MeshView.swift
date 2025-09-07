@@ -25,7 +25,15 @@ struct MeshView: View {
     }
 }
 
-import SwiftUI
+extension View {
+    func appBackground() -> some View {
+        self.background(
+            MeshView()
+                .ignoresSafeArea()
+        )
+    }
+}
+
 
 extension View {
     func cardStyle() -> some View {
