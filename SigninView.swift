@@ -1,6 +1,6 @@
 //
 //  SignupVIew.swift
-//  ToDoTask
+//  Taski
 //
 //  Created by 金井菜津希 on 2025/08/09.
 //
@@ -9,21 +9,24 @@ import SwiftUI
 
 struct SigninView: View {
     @EnvironmentObject var authVM: AuthViewModel
-    @State private var email: String = ""
-    @State private var password: String = ""
+    @State private var email = ""
+    @State private var password = ""
     @State private var showSignup = false
     @State private var showPassword = false
-    
+    @State private var main = false
+
     var body: some View {
-        ZStack{
-            MeshView()
-            
+        ZStack {
+//            // 背景
+//            MeshView()
+//                .ignoresSafeArea()
+//            
             VStack(spacing: 20) {
-                Text("LogIn")
+                Text("Sign In")
                     .font(.system(.title, design: .serif))
-                    .font(.largeTitle)
                     .foregroundColor(.primary)
                 
+                // Email入力
                 HStack {
                     Image(systemName: "person")
                         .foregroundColor(.secondary)
@@ -32,8 +35,9 @@ struct SigninView: View {
                         .disableAutocorrection(true)
                 }
                 .foregroundColor(.primary)
-                .cardStyle()
-                
+                .cardStyle() // カード風スタイル
+
+                // パスワード入力
                 HStack {
                     Image(systemName: "lock")
                         .foregroundColor(.secondary)
@@ -53,29 +57,38 @@ struct SigninView: View {
                 .cardStyle()
                 .padding(.bottom, 30)
                 
-                
-                if let error = authVM.errorMessage {
-                    Text(error)
-                        .foregroundColor(.red)
-                }
-                
+                // ログインボタン
                 Button("ログイン") {
                     authVM.signIn(email: email, password: password)
                 }
-                .buttonStyle(.borderedProminent)
+                .sheet(isPresented: $main){
+                    MainView()
+                    
+                }
                 .foregroundColor(.white)
-                
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(Color.blue)
+                .cornerRadius(26)
+                .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 5)
+     
+
+                // 新規登録ボタン
                 Button("新規登録") {
-                    authVM.errorMessage = nil // 遷移前にエラーをクリア
                     showSignup.toggle()
                 }
                 .sheet(isPresented: $showSignup) {
-                    SignupView()
-                        .environmentObject(authVM)
+                    SignupView().environmentObject(authVM)
                 }
-                .buttonStyle(.borderedProminent)
                 .foregroundColor(.white)
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(Color.blue)
+                .cornerRadius(26)
+                .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 5)
+                
             }
+            .padding()
             .cardStyle()
         }
     }

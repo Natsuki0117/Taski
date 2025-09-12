@@ -1,6 +1,6 @@
 //
 //  AddToDoView.swift
-//  ToDoTask
+//  Taski
 //
 //  Created by 金井菜津希 on 2024/08/21.
 //
@@ -14,34 +14,33 @@ struct AddToDoView: View {
     @State var title = ""
     @State var dueDate = Date()
     @State var moodLevel: Int = 5
-    @State private var doTime: String = "30"
+    @State private var doTime: String = ""
     
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
      
         ZStack {
-            MeshGradient(width: 3, height: 3, points: [
-                            [0, 0],   [0.5, 0],   [1.0, 0],
-                            [0, 0.5], [0.5, 0.5], [1.0, 0.5],
-                            [0, 1.0], [0.5, 1.0], [1.0, 1.0]
-                        ], colors: [
-                            .color1, .color1, .color1,
-                            .color1, .color1, .color2,
-                            .color2, .color2, .color2
-                        ])
-                        .ignoresSafeArea()
-
-            
+          MeshView()
                 .scrollContentBackground(.hidden)
             ScrollView {
                 VStack(spacing: 24) {
-                    
+                    Text("AddTask")
+                        .font(.system(.title, design: .serif))
+                        .foregroundColor(.primary)
                     Group {
                         // タイトル入力
-                        TextFieldCard(title: "タイトル", text: $title, placeholder: "例: 数学の宿題")
-                            .foregroundColor(.gray)
-                        // 期限入力
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("✒️ タイトル")
+                                .font(.headline)
+                                .foregroundColor(.gray)
+                            TextField("例:数学の課題", text: $title)
+                                .font(.title3)
+                                .foregroundColor(.gray)
+                                .keyboardType(.numberPad)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                        }
+                        .cardStyle()                        // 期限入力
                         VStack(alignment: .leading) {
                             Text("📅 期限を選ぼう")
                                 .foregroundColor(.gray)
@@ -55,7 +54,7 @@ struct AddToDoView: View {
                     // タスクの重さ
                     VStack(spacing: 8) {
                        
-                            Text("⚖️ タスクの重さ")
+                            Text("⚖️ タスクの難易度")
                                 .foregroundColor(.gray)
                                 .font(.headline)
                                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -78,7 +77,8 @@ struct AddToDoView: View {
                         Text("⏰ かかる時間（分）")
                             .font(.headline)
                             .foregroundColor(.gray)
-                        TextField("30", text: $doTime)
+                        TextField("30",text: $doTime)
+                            .font(.title3)
                             .foregroundColor(.gray)
                             .keyboardType(.numberPad)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -150,19 +150,19 @@ struct AddToDoView: View {
 }
 
 // テキストフィールド用の小コンポーネント
-struct TextFieldCard: View {
-    var title: String
-    @Binding var text: String
-    var placeholder: String
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("🖋️ \(title)")
-                .font(.headline)
-            TextField(placeholder, text: $text)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-        }
-        .cardStyle()
-    }
-}
-
+//struct TextFieldCard: View {
+//    var title: String
+//    @Binding var text: String
+//    var placeholder: String
+//
+//    var body: some View {
+//        VStack(alignment: .leading, spacing: 8) {
+//            Text("🖋️ \(title)")
+//                .font(.headline)
+//            TextField(placeholder, text: $text)
+//                .textFieldStyle(RoundedBorderTextFieldStyle())
+//        }
+//        .cardStyle()
+//    }
+//}
+//

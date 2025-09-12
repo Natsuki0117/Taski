@@ -1,6 +1,6 @@
 //
 //  TaskItem.swift
-//  ToDoTask
+//  Taski
 //
 //  Created by 金井菜津希 on 2024/08/21.
 //
@@ -16,7 +16,9 @@ struct TaskItem: Codable, Identifiable {
     var dueDate: Date
     var doTime: Int
     var isCompleted: Bool = false
+    var completedRank: String? 
     
+    // 現在の日付で計算するランク
     var rank: String {
         let daysLeft = Calendar.current.dateComponents([.day], from: Date(), to: dueDate).day ?? 0
         if daysLeft < 0 { return "期限切れ" }
@@ -28,12 +30,24 @@ struct TaskItem: Codable, Identifiable {
     
     var rankColor: Color {
         switch rank {
-        case "S": return .red
-        case "A": return .yellow
-        case "B": return .blue
-        case "C": return .green
-        case "期限切れ": return .gray
+        case "S": return .s
+        case "A": return .a
+        case "B": return .b
+        case "C": return .c
+        case "期限切れ": return .gray.opacity(0.5)
         default: return .black
+        }
+    }
+    
+    // 完了済みランクの色
+    var completedRankColor: Color {
+        switch completedRank ?? rank {
+        case "S": return .s
+        case "A": return .a
+        case "B": return .b
+        case "C": return .c
+        case "期限切れ": return .gray.opacity(0.5)
+        default: return .black.opacity(0.5)
         }
     }
 }

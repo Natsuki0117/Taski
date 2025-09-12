@@ -22,7 +22,7 @@ struct Taski: App {
                     
                     if authVM.isAuthenticated {
                         if authVM.currentUser?.name.isEmpty ?? true || authVM.currentUser?.iconURL.isEmpty ?? true {
-                            SigninView()
+                            SignupView()
                                 .environmentObject(authVM)
                                 .environmentObject(taskStore)
                         } else {
@@ -31,7 +31,7 @@ struct Taski: App {
                                 .environmentObject(taskStore)
                         }
                     } else {
-                        SignupView()
+                        SigninView()
                             .environmentObject(authVM)
                             .environmentObject(taskStore)
                     }

@@ -1,6 +1,6 @@
 //
 //  EditorVIew.swift
-//  ToDoTask
+//  Taski
 //
 //  Created by 金井菜津希 on 2025/08/09.
 //
@@ -16,10 +16,15 @@ struct EditorView: View {
     @State private var name: String = ""
     @State private var selectedImage: UIImage?
     @State private var showPicker = false
-    
+
     var body: some View {
-        ZStack{
-            NavigationStack {
+        NavigationStack {
+            ZStack {
+                // 背景を一番下に
+                MeshView()
+                    .ignoresSafeArea()
+                
+                // その上にフォームを置く
                 VStack(spacing: 20) {
                     Button {
                         showPicker = true
@@ -30,7 +35,8 @@ struct EditorView: View {
                                 .scaledToFill()
                                 .frame(width: 120, height: 120)
                                 .clipShape(Circle())
-                        } else if let url = URL(string: vm.currentUser?.iconURL ?? ""), !(vm.currentUser?.iconURL ?? "").isEmpty {
+                        } else if let url = URL(string: vm.currentUser?.iconURL ?? ""),
+                                  !(vm.currentUser?.iconURL ?? "").isEmpty {
                             AsyncImage(url: url) { image in
                                 image.resizable()
                                     .scaledToFill()
@@ -50,38 +56,36 @@ struct EditorView: View {
                     .sheet(isPresented: $showPicker) {
                         ImagePicker(image: $selectedImage)
                     }
-                    
+
                     TextField("名前を入力", text: $name)
                         .padding()
                         .background(.ultraThinMaterial)
                         .cornerRadius(10)
                         .foregroundColor(.primary)
-                    
+
                     Button("保存") {
                         let newName = name.isEmpty ? vm.displayName : name
-                        vm.updateUser(name: newName, iconImage: selectedImage)
-                        dismiss()
+                        vm.updateUser(name: newName, iconImage: selectedImage) { success in
+                            if success {
+                                dismiss()
+                            } else {
+                                print("更新に失敗しました")
+                            }
+                        }
                     }
-                    
-//                    .frame(maxWidth: .infinity)
+                    .frame(maxWidth: .infinity)
                     .padding()
                     .background(Color.blue)
                     .foregroundColor(.white)
                     .cornerRadius(10)
-                }   
-                .appBackground()
-//                .padding()
-                .onAppear {
-                    name = vm.displayName
                 }
-                
-                .navigationTitle("プロフィール編集")
-                .navigationBarTitleDisplayMode(.inline)
-          
+                .padding()
             }
- 
+            .navigationTitle("プロフィール編集")
+            .navigationBarTitleDisplayMode(.inline)
+            .onAppear {
+                name = vm.displayName
+            }
         }
-        
     }
-       
 }

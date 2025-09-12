@@ -20,8 +20,8 @@
 		807BA0F52C75F1A0002EBB9B /* TaskItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807BA0F42C75F1A0002EBB9B /* TaskItem.swift */; };
 		807BA0F72C75F5B4002EBB9B /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 807BA0F62C75F5B4002EBB9B /* FirebaseFirestore */; };
 		807BA0F92C75F62B002EBB9B /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 807BA0F82C75F62B002EBB9B /* FirebaseFirestore */; };
-		807BA1062C7F20D6002EBB9B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 807BA1052C7F20D6002EBB9B /* GoogleService-Info.plist */; };
 		807BA1082C7F2EC5002EBB9B /* FirestoreClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807BA1072C7F2EC5002EBB9B /* FirestoreClient.swift */; };
+		808C46492E6D79C900ADB8D5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 808C46482E6D79C900ADB8D5 /* GoogleService-Info.plist */; };
 		808DEB782E452B6A008AF99C /* FirebaseAuthUI in Frameworks */ = {isa = PBXBuildFile; productRef = 808DEB772E452B6A008AF99C /* FirebaseAuthUI */; };
 		808DEB7A2E452B6A008AF99C /* FirebaseEmailAuthUI in Frameworks */ = {isa = PBXBuildFile; productRef = 808DEB792E452B6A008AF99C /* FirebaseEmailAuthUI */; };
 		808DEB7C2E452B6A008AF99C /* FirebaseGoogleAuthUI in Frameworks */ = {isa = PBXBuildFile; productRef = 808DEB7B2E452B6A008AF99C /* FirebaseGoogleAuthUI */; };
@@ -31,11 +31,12 @@
 		808DEBAB2E46790E008AF99C /* ImagePicker .swift in Sources */ = {isa = PBXBuildFile; fileRef = 808DEBAA2E46790E008AF99C /* ImagePicker .swift */; };
 		808DEBAD2E47924D008AF99C /* SigninView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808DEBAC2E47924D008AF99C /* SigninView.swift */; };
 		808DEBAF2E4799F2008AF99C /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808DEBAE2E4799F2008AF99C /* SignupView.swift */; };
-		808DEBB12E47A7B8008AF99C /* EmailSignInApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808DEBB02E47A7B8008AF99C /* EmailSignInApp.swift */; };
+		808DEBB12E47A7B8008AF99C /* Taski.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808DEBB02E47A7B8008AF99C /* Taski.swift */; };
 		808DEBB32E47A840008AF99C /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808DEBB22E47A840008AF99C /* AccountView.swift */; };
 		808DEBB52E4CE0B4008AF99C /* TaskStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808DEBB42E4CE0B4008AF99C /* TaskStore.swift */; };
 		808DEBB72E4CE607008AF99C /* InitialSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808DEBB62E4CE607008AF99C /* InitialSetupView.swift */; };
 		808DEBB92E643621008AF99C /* PieChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808DEBB82E643621008AF99C /* PieChartView.swift */; };
+		80A88CA82E6F9BEE00890565 /* TaskListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A88CA72E6F9BEE00890565 /* TaskListView.swift */; };
 		80C9A00E2C91B1F800635FB2 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 80C9A00D2C91B1F800635FB2 /* FirebaseAuth */; };
 		80C9A0102C91B1F800635FB2 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 80C9A00F2C91B1F800635FB2 /* FirebaseFirestore */; };
 		80C9A0122C91B1F800635FB2 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 80C9A0112C91B1F800635FB2 /* FirebaseStorage */; };
@@ -44,7 +45,7 @@
 
 /* Begin PBXFileReference section */
 		804F796F2D297F0900F25083 /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
-		807BA0B12C6D218C002EBB9B /* ToDoTask.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoTask.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		807BA0B12C6D218C002EBB9B /* Taski.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Taski.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		807BA0B82C6D218F002EBB9B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		807BA0BB2C6D218F002EBB9B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		807BA0D42C6D233C002EBB9B /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
@@ -54,18 +55,19 @@
 		807BA0EA2C74F374002EBB9B /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		807BA0F02C750DF7002EBB9B /* AddToDoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddToDoView.swift; sourceTree = "<group>"; };
 		807BA0F42C75F1A0002EBB9B /* TaskItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskItem.swift; sourceTree = "<group>"; };
-		807BA1052C7F20D6002EBB9B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		807BA1072C7F2EC5002EBB9B /* FirestoreClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreClient.swift; sourceTree = "<group>"; };
+		808C46482E6D79C900ADB8D5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		808DEB8F2E4665D7008AF99C /* EditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorView.swift; sourceTree = "<group>"; };
 		808DEB972E466E30008AF99C /* MeshView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeshView.swift; sourceTree = "<group>"; };
 		808DEBAA2E46790E008AF99C /* ImagePicker .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImagePicker .swift"; sourceTree = "<group>"; };
 		808DEBAC2E47924D008AF99C /* SigninView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SigninView.swift; sourceTree = "<group>"; };
 		808DEBAE2E4799F2008AF99C /* SignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
-		808DEBB02E47A7B8008AF99C /* EmailSignInApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailSignInApp.swift; sourceTree = "<group>"; };
+		808DEBB02E47A7B8008AF99C /* Taski.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Taski.swift; sourceTree = "<group>"; };
 		808DEBB22E47A840008AF99C /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
 		808DEBB42E4CE0B4008AF99C /* TaskStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskStore.swift; sourceTree = "<group>"; };
 		808DEBB62E4CE607008AF99C /* InitialSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialSetupView.swift; sourceTree = "<group>"; };
 		808DEBB82E643621008AF99C /* PieChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartView.swift; sourceTree = "<group>"; };
+		80A88CA72E6F9BEE00890565 /* TaskListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListView.swift; sourceTree = "<group>"; };
 		80F088DF2E6D2FD000EB49BF /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -94,7 +96,7 @@
 		807BA0A82C6D218C002EBB9B = {
 			isa = PBXGroup;
 			children = (
-				807BA0B32C6D218C002EBB9B /* ToDoTask */,
+				807BA0B32C6D218C002EBB9B /* Taski */,
 				807BA0EA2C74F374002EBB9B /* CalendarView.swift */,
 				808DEB972E466E30008AF99C /* MeshView.swift */,
 				808DEB8F2E4665D7008AF99C /* EditorView.swift */,
@@ -103,6 +105,7 @@
 				807BA0D62C6D236D002EBB9B /* AppDelegate.swift */,
 				808DEBAC2E47924D008AF99C /* SigninView.swift */,
 				808DEBAE2E4799F2008AF99C /* SignupView.swift */,
+				80A88CA72E6F9BEE00890565 /* TaskListView.swift */,
 				807BA0F02C750DF7002EBB9B /* AddToDoView.swift */,
 				807BA0D42C6D233C002EBB9B /* AuthViewModel.swift */,
 				80F088DF2E6D2FD000EB49BF /* TestView.swift */,
@@ -113,7 +116,7 @@
 				808DEBB22E47A840008AF99C /* AccountView.swift */,
 				808DEBB82E643621008AF99C /* PieChartView.swift */,
 				808DEBB42E4CE0B4008AF99C /* TaskStore.swift */,
-				808DEBB02E47A7B8008AF99C /* EmailSignInApp.swift */,
+				808DEBB02E47A7B8008AF99C /* Taski.swift */,
 				807BA0B22C6D218C002EBB9B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -121,20 +124,20 @@
 		807BA0B22C6D218C002EBB9B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				807BA0B12C6D218C002EBB9B /* ToDoTask.app */,
+				807BA0B12C6D218C002EBB9B /* Taski.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		807BA0B32C6D218C002EBB9B /* ToDoTask */ = {
+		807BA0B32C6D218C002EBB9B /* Taski */ = {
 			isa = PBXGroup;
 			children = (
-				807BA1052C7F20D6002EBB9B /* GoogleService-Info.plist */,
+				808C46482E6D79C900ADB8D5 /* GoogleService-Info.plist */,
 				807BA0B82C6D218F002EBB9B /* Assets.xcassets */,
 				807BA0E32C6D2A77002EBB9B /* Info.plist */,
 				807BA0BA2C6D218F002EBB9B /* Preview Content */,
 			);
-			path = ToDoTask;
+			path = Taski;
 			sourceTree = "<group>";
 		};
 		807BA0BA2C6D218F002EBB9B /* Preview Content */ = {
@@ -148,9 +151,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		807BA0B02C6D218C002EBB9B /* ToDoTask */ = {
+		807BA0B02C6D218C002EBB9B /* Taski */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 807BA0BF2C6D218F002EBB9B /* Build configuration list for PBXNativeTarget "ToDoTask" */;
+			buildConfigurationList = 807BA0BF2C6D218F002EBB9B /* Build configuration list for PBXNativeTarget "Taski" */;
 			buildPhases = (
 				807BA0AD2C6D218C002EBB9B /* Sources */,
 				807BA0AE2C6D218C002EBB9B /* Frameworks */,
@@ -160,7 +163,7 @@
 			);
 			dependencies = (
 			);
-			name = ToDoTask;
+			name = Taski;
 			packageProductDependencies = (
 				807BA0F62C75F5B4002EBB9B /* FirebaseFirestore */,
 				807BA0F82C75F62B002EBB9B /* FirebaseFirestore */,
@@ -175,7 +178,7 @@
 				808DEB952E466863008AF99C /* FirebaseStorageUI */,
 			);
 			productName = ToDoTask;
-			productReference = 807BA0B12C6D218C002EBB9B /* ToDoTask.app */;
+			productReference = 807BA0B12C6D218C002EBB9B /* Taski.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -193,7 +196,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 807BA0AC2C6D218C002EBB9B /* Build configuration list for PBXProject "ToDoTask" */;
+			buildConfigurationList = 807BA0AC2C6D218C002EBB9B /* Build configuration list for PBXProject "Taski" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -212,7 +215,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				807BA0B02C6D218C002EBB9B /* ToDoTask */,
+				807BA0B02C6D218C002EBB9B /* Taski */,
 			);
 		};
 /* End PBXProject section */
@@ -223,8 +226,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				807BA0BC2C6D218F002EBB9B /* Preview Assets.xcassets in Resources */,
+				808C46492E6D79C900ADB8D5 /* GoogleService-Info.plist in Resources */,
 				807BA0B92C6D218F002EBB9B /* Assets.xcassets in Resources */,
-				807BA1062C7F20D6002EBB9B /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -236,8 +239,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				808DEBB92E643621008AF99C /* PieChartView.swift in Sources */,
+				80A88CA82E6F9BEE00890565 /* TaskListView.swift in Sources */,
 				808DEBAF2E4799F2008AF99C /* SignupView.swift in Sources */,
-				808DEBB12E47A7B8008AF99C /* EmailSignInApp.swift in Sources */,
+				808DEBB12E47A7B8008AF99C /* Taski.swift in Sources */,
 				808DEBAB2E46790E008AF99C /* ImagePicker .swift in Sources */,
 				808DEB982E466E30008AF99C /* MeshView.swift in Sources */,
 				808DEBB32E47A840008AF99C /* AccountView.swift in Sources */,
@@ -386,11 +390,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"ToDoTask/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Taski/Preview Content\"";
 				DEVELOPMENT_TEAM = 6883D837G9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ToDoTask/Info.plist;
+				INFOPLIST_FILE = Taski/Info.plist;
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "プロフィール画像を選択するために写真ライブラリにアクセスします";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -404,7 +408,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = app.kanai.natsuki.ToDoTask;
+				PRODUCT_BUNDLE_IDENTIFIER = app.kanai.natsuki.TodoTask;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -419,11 +423,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"ToDoTask/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Taski/Preview Content\"";
 				DEVELOPMENT_TEAM = 6883D837G9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ToDoTask/Info.plist;
+				INFOPLIST_FILE = Taski/Info.plist;
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "プロフィール画像を選択するために写真ライブラリにアクセスします";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -437,7 +441,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = app.kanai.natsuki.ToDoTask;
+				PRODUCT_BUNDLE_IDENTIFIER = app.kanai.natsuki.TodoTask;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -448,7 +452,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		807BA0AC2C6D218C002EBB9B /* Build configuration list for PBXProject "ToDoTask" */ = {
+		807BA0AC2C6D218C002EBB9B /* Build configuration list for PBXProject "Taski" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				807BA0BD2C6D218F002EBB9B /* Debug */,
@@ -457,7 +461,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		807BA0BF2C6D218F002EBB9B /* Build configuration list for PBXNativeTarget "ToDoTask" */ = {
+		807BA0BF2C6D218F002EBB9B /* Build configuration list for PBXNativeTarget "Taski" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				807BA0C02C6D218F002EBB9B /* Debug */,

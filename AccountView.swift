@@ -1,6 +1,6 @@
 //
 //  AccountView.swift
-//  ToDoTask
+//  Taski
 //
 //  Created by 金井菜津希 on 2025/08/10.
 //
@@ -9,14 +9,23 @@ import SwiftUI
 struct AccountView: View {
     @EnvironmentObject var authVM: AuthViewModel
     @EnvironmentObject var taskStore: TaskStore
-    @State private var showEditor = false
-    
+    @State private var edit = false
+
     var body: some View {
-        ZStack{
-            NavigationStack {
-                
-                VStack(spacing: 20) {
+        NavigationStack {
+            ZStack {
+                Color.clear
+                    .appBackground()
+                    .ignoresSafeArea()
+
+                VStack {
+                    Text("Account")
+                        .font(.system(.title, design: .serif))
+                        .foregroundColor(.primary)
+                    // 上部にアイコンと名前
                     if let user = authVM.currentUser {
+                        Spacer().frame(height: 40)
+
                         // アイコン
                         if let url = URL(string: user.iconURL), !user.iconURL.isEmpty {
                             AsyncImage(url: url) { image in
@@ -25,7 +34,8 @@ struct AccountView: View {
                                     .frame(width: 120, height: 120)
                                     .clipShape(Circle())
                             } placeholder: {
-                                Circle().fill(Color.gray.opacity(0.3))
+                                Circle()
+                                    .fill(Color.gray.opacity(0.3))
                                     .frame(width: 120, height: 120)
                             }
                         } else {
@@ -33,56 +43,63 @@ struct AccountView: View {
                                 .fill(Color.gray.opacity(0.3))
                                 .frame(width: 120, height: 120)
                         }
-                        
+
                         // 名前
                         Text(user.name)
                             .font(.title2)
-                            .padding(.top, 8)
-                        
-                        // 編集ボタン
-                        Button("プロフィール編集") {
-                            showEditor.toggle()
-                        }
-                        .sheet(isPresented: $showEditor) {
-                            EditorView()
-                                .environmentObject(authVM)
-                        }
-                        
-                        Divider()
-                        
-                        // 終了タスクのランク別円グラフ
+                            .bold()
+                            .foregroundColor(.primary)
+                            .padding(.top, 12)
+
+                        Spacer()
+
+                        // 円グラフまたは「タスクがありません」
                         if !taskStore.tasks.isEmpty {
                             PieChartView(data: rankDistribution(tasks: taskStore.tasks))
                                 .frame(height: 200)
-                                .padding()
+                        } else {
+                            Text("まずはタスクを登録しよう🎉")
+                                .foregroundColor(.secondary)
+                                .font(.headline)
                         }
-                        
-                        Spacer()
-                        
+
+                        Spacer() // 円グラフとログアウトの間にスペース
+
+                        // ログアウトボタンを画面下部に固定
                         Button("ログアウト") {
                             authVM.logout()
                         }
                         .padding(.bottom, 30)
-                    } else {
-                        Text("ログインしていません")
                     }
                 }
-                .padding()
+                .padding(.horizontal)
                 .onAppear {
                     taskStore.fetchTasks()
                 }
-                .appBackground()
+            }
+            
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: { edit = true }) {
+                        Text("編集")
+                    }
+                    .accentColor(.gray)
+                }
+            }
+            .sheet(isPresented: $edit) {
+                EditorView()
             }
         }
     }
-    
+
     func rankDistribution(tasks: [TaskItem]) -> [(rank: String, count: Int, color: Color)] {
         let finishedTasks = tasks.filter { $0.isCompleted }
         return [
-            ("S", finishedTasks.filter { $0.rank == "S" }.count, .red),
-            ("A", finishedTasks.filter { $0.rank == "A" }.count, .yellow),
-            ("B", finishedTasks.filter { $0.rank == "B" }.count, .blue),
-            ("C", finishedTasks.filter { $0.rank == "C" }.count, .green),
+            ("S", finishedTasks.filter { $0.rank == "S" }.count, .s),
+            ("A", finishedTasks.filter { $0.rank == "A" }.count, .a),
+            ("B", finishedTasks.filter { $0.rank == "B" }.count, .b),
+            ("C", finishedTasks.filter { $0.rank == "C" }.count, .c),
             ("期限切れ", finishedTasks.filter { $0.rank == "期限切れ" }.count, .gray)
         ]
     }
