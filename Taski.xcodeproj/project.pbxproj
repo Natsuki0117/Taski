@@ -8,8 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		800AB4912CE4BFE30084B795 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 800AB4902CE4BFE30084B795 /* FSCalendar */; };
+		804453352E76970C001AE0A5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 804453342E76970C001AE0A5 /* GoogleService-Info.plist */; };
 		804F79702D297F0900F25083 /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804F796F2D297F0900F25083 /* TimerView.swift */; };
 		804F79752D2C258600F25083 /* Confetti in Frameworks */ = {isa = PBXBuildFile; productRef = 804F79742D2C258600F25083 /* Confetti */; };
+		80656B782E778EA2000F315B /* TaskRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80656B772E778EA2000F315B /* TaskRowView.swift */; };
 		807BA0B92C6D218F002EBB9B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 807BA0B82C6D218F002EBB9B /* Assets.xcassets */; };
 		807BA0BC2C6D218F002EBB9B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 807BA0BB2C6D218F002EBB9B /* Preview Assets.xcassets */; };
 		807BA0D52C6D233C002EBB9B /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807BA0D42C6D233C002EBB9B /* AuthViewModel.swift */; };
@@ -21,7 +23,6 @@
 		807BA0F72C75F5B4002EBB9B /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 807BA0F62C75F5B4002EBB9B /* FirebaseFirestore */; };
 		807BA0F92C75F62B002EBB9B /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 807BA0F82C75F62B002EBB9B /* FirebaseFirestore */; };
 		807BA1082C7F2EC5002EBB9B /* FirestoreClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807BA1072C7F2EC5002EBB9B /* FirestoreClient.swift */; };
-		808C46492E6D79C900ADB8D5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 808C46482E6D79C900ADB8D5 /* GoogleService-Info.plist */; };
 		808DEB782E452B6A008AF99C /* FirebaseAuthUI in Frameworks */ = {isa = PBXBuildFile; productRef = 808DEB772E452B6A008AF99C /* FirebaseAuthUI */; };
 		808DEB7A2E452B6A008AF99C /* FirebaseEmailAuthUI in Frameworks */ = {isa = PBXBuildFile; productRef = 808DEB792E452B6A008AF99C /* FirebaseEmailAuthUI */; };
 		808DEB7C2E452B6A008AF99C /* FirebaseGoogleAuthUI in Frameworks */ = {isa = PBXBuildFile; productRef = 808DEB7B2E452B6A008AF99C /* FirebaseGoogleAuthUI */; };
@@ -40,11 +41,14 @@
 		80C9A00E2C91B1F800635FB2 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 80C9A00D2C91B1F800635FB2 /* FirebaseAuth */; };
 		80C9A0102C91B1F800635FB2 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 80C9A00F2C91B1F800635FB2 /* FirebaseFirestore */; };
 		80C9A0122C91B1F800635FB2 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 80C9A0112C91B1F800635FB2 /* FirebaseStorage */; };
+		80ED32962E76C48300C492AD /* FirebaseDatabaseUI in Frameworks */ = {isa = PBXBuildFile; productRef = 80ED32952E76C48300C492AD /* FirebaseDatabaseUI */; };
 		80F088E02E6D2FD000EB49BF /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F088DF2E6D2FD000EB49BF /* TestView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		804453342E76970C001AE0A5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		804F796F2D297F0900F25083 /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
+		80656B772E778EA2000F315B /* TaskRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskRowView.swift; sourceTree = "<group>"; };
 		807BA0B12C6D218C002EBB9B /* Taski.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Taski.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		807BA0B82C6D218F002EBB9B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		807BA0BB2C6D218F002EBB9B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -56,7 +60,6 @@
 		807BA0F02C750DF7002EBB9B /* AddToDoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddToDoView.swift; sourceTree = "<group>"; };
 		807BA0F42C75F1A0002EBB9B /* TaskItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskItem.swift; sourceTree = "<group>"; };
 		807BA1072C7F2EC5002EBB9B /* FirestoreClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreClient.swift; sourceTree = "<group>"; };
-		808C46482E6D79C900ADB8D5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		808DEB8F2E4665D7008AF99C /* EditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorView.swift; sourceTree = "<group>"; };
 		808DEB972E466E30008AF99C /* MeshView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeshView.swift; sourceTree = "<group>"; };
 		808DEBAA2E46790E008AF99C /* ImagePicker .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImagePicker .swift"; sourceTree = "<group>"; };
@@ -78,6 +81,7 @@
 			files = (
 				808DEB7C2E452B6A008AF99C /* FirebaseGoogleAuthUI in Frameworks */,
 				808DEB962E466863008AF99C /* FirebaseStorageUI in Frameworks */,
+				80ED32962E76C48300C492AD /* FirebaseDatabaseUI in Frameworks */,
 				807BA0F92C75F62B002EBB9B /* FirebaseFirestore in Frameworks */,
 				804F79752D2C258600F25083 /* Confetti in Frameworks */,
 				800AB4912CE4BFE30084B795 /* FSCalendar in Frameworks */,
@@ -98,6 +102,7 @@
 			children = (
 				807BA0B32C6D218C002EBB9B /* Taski */,
 				807BA0EA2C74F374002EBB9B /* CalendarView.swift */,
+				80656B772E778EA2000F315B /* TaskRowView.swift */,
 				808DEB972E466E30008AF99C /* MeshView.swift */,
 				808DEB8F2E4665D7008AF99C /* EditorView.swift */,
 				808DEBAA2E46790E008AF99C /* ImagePicker .swift */,
@@ -132,7 +137,7 @@
 		807BA0B32C6D218C002EBB9B /* Taski */ = {
 			isa = PBXGroup;
 			children = (
-				808C46482E6D79C900ADB8D5 /* GoogleService-Info.plist */,
+				804453342E76970C001AE0A5 /* GoogleService-Info.plist */,
 				807BA0B82C6D218F002EBB9B /* Assets.xcassets */,
 				807BA0E32C6D2A77002EBB9B /* Info.plist */,
 				807BA0BA2C6D218F002EBB9B /* Preview Content */,
@@ -176,6 +181,7 @@
 				808DEB792E452B6A008AF99C /* FirebaseEmailAuthUI */,
 				808DEB7B2E452B6A008AF99C /* FirebaseGoogleAuthUI */,
 				808DEB952E466863008AF99C /* FirebaseStorageUI */,
+				80ED32952E76C48300C492AD /* FirebaseDatabaseUI */,
 			);
 			productName = ToDoTask;
 			productReference = 807BA0B12C6D218C002EBB9B /* Taski.app */;
@@ -226,7 +232,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				807BA0BC2C6D218F002EBB9B /* Preview Assets.xcassets in Resources */,
-				808C46492E6D79C900ADB8D5 /* GoogleService-Info.plist in Resources */,
+				804453352E76970C001AE0A5 /* GoogleService-Info.plist in Resources */,
 				807BA0B92C6D218F002EBB9B /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -248,6 +254,7 @@
 				804F79702D297F0900F25083 /* TimerView.swift in Sources */,
 				808DEBB72E4CE607008AF99C /* InitialSetupView.swift in Sources */,
 				807BA0D72C6D236D002EBB9B /* AppDelegate.swift in Sources */,
+				80656B782E778EA2000F315B /* TaskRowView.swift in Sources */,
 				807BA0E02C6D28B0002EBB9B /* MainView.swift in Sources */,
 				807BA0D52C6D233C002EBB9B /* AuthViewModel.swift in Sources */,
 				807BA1082C7F2EC5002EBB9B /* FirestoreClient.swift in Sources */,
@@ -408,7 +415,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = app.kanai.natsuki.TodoTask;
+				PRODUCT_BUNDLE_IDENTIFIER = app.kanai.natsuki.Taski;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -441,7 +448,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = app.kanai.natsuki.TodoTask;
+				PRODUCT_BUNDLE_IDENTIFIER = app.kanai.natsuki.Taski;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -560,6 +567,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 80C9A00C2C91B1F800635FB2 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
+		};
+		80ED32952E76C48300C492AD /* FirebaseDatabaseUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 808DEB762E452B6A008AF99C /* XCRemoteSwiftPackageReference "firebaseui-ios" */;
+			productName = FirebaseDatabaseUI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

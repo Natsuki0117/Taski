@@ -19,6 +19,7 @@ struct Taski: App {
                 ZStack {
                     MeshView()
                         .ignoresSafeArea()
+                        .allowsHitTesting(false)
                     
                     if authVM.isAuthenticated {
                         if authVM.currentUser?.name.isEmpty ?? true || authVM.currentUser?.iconURL.isEmpty ?? true {

@@ -1,5 +1,5 @@
 //
-//  InitialSetup.swift
+//  InitialSetupView.swift
 //  Taski
 //
 //  Created by 金井菜津希 on 2025/08/14.
@@ -12,7 +12,7 @@ struct InitialSetupView: View {
     @State private var iconImage: UIImage?
     @State private var showPicker = false
     @State private var navigateToMain = false
-
+    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -23,8 +23,6 @@ struct InitialSetupView: View {
                     Text("Profile")
                         .font(.system(.title, design: .serif))
                         .foregroundColor(.primary)
-
-                    padding()
                     
                     Button {
                         showPicker = true
@@ -49,17 +47,19 @@ struct InitialSetupView: View {
                     }
                     
                     TextField("名前を入力", text: $name)
+                        .background(.ultraThinMaterial)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .multilineTextAlignment(.center)
-                        .padding(.horizontal)
                         .shadow(radius: 5)
+                        .padding()
+                        
                         .cornerRadius(10)
-                     
+                        .foregroundColor(.primary)
+                    
                     Button {
-                        authVM.updateUser(name: name, iconImage: iconImage) { success in
-                            if success {
-                                navigateToMain = true
-                            }
+                        Task {
+                            let success = await authVM.updateUser(name: name, iconImage: iconImage)
+                            if success { navigateToMain = true }
                         }
                     } label: {
                         if authVM.isSaving {
@@ -68,25 +68,15 @@ struct InitialSetupView: View {
                                 .padding()
                         } else {
                             Text("保存")
-//                                .frame(maxWidth: .infinity)
                                 .padding()
                                 .background((name.isEmpty || iconImage == nil) ? Color.gray : Color.blue)
                                 .foregroundColor(.white)
                                 .cornerRadius(10)
                                 .shadow(radius: 5)
-                            padding()
                         }
-                    }
-                    .disabled(name.isEmpty || iconImage == nil)
-                    .padding(.horizontal)
-                    
-                    NavigationLink(destination: MainView()
-                                    .environmentObject(authVM), isActive: $navigateToMain) {
-                        EmptyView()
+                        
                     }
                 }
-                .cardStyle()
-                .padding()
             }
         }
     }
@@ -95,4 +85,3 @@ struct InitialSetupView: View {
 #Preview {
     InitialSetupView()
 }
-    

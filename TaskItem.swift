@@ -16,7 +16,9 @@ struct TaskItem: Codable, Identifiable {
     var dueDate: Date
     var doTime: Int
     var isCompleted: Bool = false
-    var completedRank: String? 
+    var completedRank: String?
+    var extendedMinutes: Int = 0
+    var emotionLevel: Int? = nil
     
     // 現在の日付で計算するランク
     var rank: String {

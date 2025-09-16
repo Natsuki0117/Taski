@@ -11,7 +11,7 @@ import FirebaseFirestore
 import FirebaseStorage
 import SwiftUI
 
-
+@MainActor
 class AuthViewModel: ObservableObject {
     @Published var isAuthenticated: Bool = false
     @Published var currentUser: UserModel?
@@ -19,176 +19,132 @@ class AuthViewModel: ObservableObject {
     @Published var iconData: UIImage? = nil
     @Published var errorMessage: String?
     @Published var isSaving: Bool = false
-    
+
     init() {
-        if let user = Auth.auth().currentUser {
-            self.isAuthenticated = true
-            fetchUserData(uid: user.uid)
+        Task {
+            await checkCurrentUser()
         }
     }
     
-    func fetchUserData(uid: String) {
-        Firestore.firestore().collection("users").document(uid).getDocument { snapshot, error in
-            guard let data = snapshot?.data(), snapshot?.exists == true else { return }
+    func checkCurrentUser() async {
+        if let user = Auth.auth().currentUser {
+            isAuthenticated = true
+            await fetchUserData(uid: user.uid)
+        }
+    }
+    
+    // MARK: - Firestoreからユーザー情報取得
+    func fetchUserData(uid: String) async {
+        do {
+            let doc = try await Firestore.firestore().collection("users").document(uid).getDocument()
+            guard let data = doc.data() else { return }
             let name = data["name"] as? String ?? ""
             let iconURL = data["iconURL"] as? String ?? ""
-            DispatchQueue.main.async {
-                self.displayName = name
-                self.currentUser = UserModel(id: uid, name: name, iconURL: iconURL)
-                if !iconURL.isEmpty { self.loadImage(from: iconURL) }
-            }
-        }
-    }
-    
-    private func loadImage(from urlString: String) {
-        guard let url = URL(string: urlString) else { return }
-        URLSession.shared.dataTask(with: url) { data, _, _ in
-            if let data = data, let image = UIImage(data: data) {
-                DispatchQueue.main.async { self.iconData = image }
-            }
-        }.resume()
-    }
-    
-    func signIn(email: String, password: String) {
-        errorMessage = nil
-        Auth.auth().signIn(withEmail: email, password: password) { result, error in
-            if let error = error {
-                DispatchQueue.main.async { self.errorMessage = error.localizedDescription }
-                return
-            }
-            guard let uid = result?.user.uid else { return }
-            DispatchQueue.main.async {
-                self.isAuthenticated = true
-                self.fetchUserData(uid: uid)
-            }
-        }
-    }
-    
-    func signUp(email: String, password: String) {
-        errorMessage = nil
-        Auth.auth().createUser(withEmail: email, password: password) { result, error in
-            if let error = error {
-                DispatchQueue.main.async { self.errorMessage = error.localizedDescription }
-                return
-            }
-            guard let uid = result?.user.uid else { return }
-            let userData: [String: Any] = ["name": "", "iconURL": ""]
-            Firestore.firestore().collection("users").document(uid).setData(userData)
-            DispatchQueue.main.async {
-                self.isAuthenticated = true
-                self.fetchUserData(uid: uid)
-            }
-        }
-    }
-    
-    func logout() {
-        do {
-            try Auth.auth().signOut()
-            DispatchQueue.main.async {
-                self.isAuthenticated = false
-                self.currentUser = nil
-                self.displayName = ""
-                self.iconData = nil
-                self.errorMessage = nil
+            
+            displayName = name
+            currentUser = UserModel(id: uid, name: name, iconURL: iconURL)
+            if !iconURL.isEmpty {
+                await loadImage(from: iconURL)
             }
         } catch {
-            print("ログアウト失敗: \(error)")
+            print("fetchUserData error:", error)
         }
     }
     
-    // =====================
-    // updateUser（安全にアップロードする版）
-    // =====================
-    
-    func updateUser(name: String, iconImage: UIImage?, completion: @escaping (Bool) -> Void) {
-        // ログインユーザーの UID を取得
-        guard let uid = Auth.auth().currentUser?.uid else {
-            print("未ログインのためアップロード不可")
-            completion(false)
-            return
+    private func loadImage(from urlString: String) async {
+        guard let url = URL(string: urlString) else { return }
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            if let image = UIImage(data: data) {
+                iconData = image
+            }
+        } catch {
+            print("Image load error:", error)
         }
-        
-        // 更新する Firestore データ
+    }
+    
+    // MARK: - サインイン
+    func signIn(email: String, password: String) async {
+        errorMessage = nil
+        do {
+            let result = try await Auth.auth().signIn(withEmail: email, password: password)
+            isAuthenticated = true
+            await fetchUserData(uid: result.user.uid)
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
+    
+    // MARK: - サインアップ
+    func signUp(email: String, password: String) async throws {
+        errorMessage = nil
+        let result = try await Auth.auth().createUser(withEmail: email, password: password)
+        let uid = result.user.uid
+        let userData: [String: Any] = ["name": "", "iconURL": ""]
+        try await Firestore.firestore().collection("users").document(uid).setData(userData)
+        isAuthenticated = true
+        await fetchUserData(uid: uid)
+    }
+    
+    // MARK: - ログアウト
+    func logout() async {
+        do {
+            try Auth.auth().signOut()
+            isAuthenticated = false
+            currentUser = nil
+            displayName = ""
+            iconData = nil
+            errorMessage = nil
+        } catch {
+            print("ログアウト失敗:", error)
+        }
+    }
+    
+    // MARK: - ユーザー情報更新
+    func updateUser(name: String, iconImage: UIImage?) async -> Bool {
+        guard let uid = Auth.auth().currentUser?.uid else { return false }
+        isSaving = true
         var data: [String: Any] = ["name": name]
-        DispatchQueue.main.async { self.isSaving = true }
         
-        // 画像がある場合
         if let iconImage = iconImage, let imageData = iconImage.jpegData(compressionQuality: 0.8) {
-            // バケット URL を明示して、ユーザー専用フォルダに保存
             let storageRef = Storage.storage(url: "gs://todotask-4912e.firebasestorage.app")
                 .reference()
                 .child("users/\(uid)/icon.jpg")
             
-            storageRef.putData(imageData, metadata: nil) { _, error in
-                if let error = error {
-                    DispatchQueue.main.async { self.isSaving = false }
-                    print("Upload failed:", error)
-                    completion(false)
-                    return
-                }
+            do {
+                _ = try await storageRef.putDataAsync(imageData, metadata: nil)
+                let url = try await storageRef.downloadURL()
+                data["iconURL"] = url.absoluteString
                 
-                // アップロード成功後にダウンロード URL を取得
-                storageRef.downloadURL { url, error in
-                    DispatchQueue.main.async { self.isSaving = false }
-                    
-                    if let error = error {
-                        print("Download URL error:", error)
-                        completion(false)
-                        return
-                    }
-                    
-                    guard let urlString = url?.absoluteString else {
-                        completion(false)
-                        return
-                    }
-                    
-                    // Firestore データに iconURL を追加
-                    data["iconURL"] = urlString
-                    
-                    // Firestore 更新
-                    Firestore.firestore().collection("users").document(uid).setData(data, merge: true) { error in
-                        if let error = error {
-                            print("Firestore Update Error:", error)
-                            completion(false)
-                            return
-                        }
-                        
-                        // UI 更新
-                        DispatchQueue.main.async {
-                            self.currentUser?.name = name
-                            self.currentUser?.iconURL = urlString
-                            self.displayName = name
-                            self.iconData = iconImage
-                            completion(true)
-                        }
-                    }
-                }
+                try await Firestore.firestore().collection("users").document(uid).setData(data, merge: true)
+                
+                displayName = name
+                currentUser?.name = name
+                currentUser?.iconURL = url.absoluteString
+                self.iconData = iconImage
+                isSaving = false
+                return true
+            } catch {
+                print("updateUser error:", error)
+                isSaving = false
+                return false
             }
         } else {
-            // 画像がない場合は名前だけ更新
-            Firestore.firestore().collection("users").document(uid).setData(data, merge: true) { error in
-                DispatchQueue.main.async { self.isSaving = false }
-                if let error = error {
-                    print("Firestore Update Error:", error)
-                    completion(false)
-                    return
-                }
-                DispatchQueue.main.async {
-                    self.currentUser?.name = name
-                    self.displayName = name
-                    completion(true)
-                }
+            do {
+                try await Firestore.firestore().collection("users").document(uid).setData(data, merge: true)
+                displayName = name
+                currentUser?.name = name
+                isSaving = false
+                return true
+            } catch {
+                print("updateUser error:", error)
+                isSaving = false
+                return false
             }
         }
     }
-
     
-    
-    
-    // =====================
-    // UserModel
-    // =====================
-    
+    // MARK: - UserModel
     struct UserModel: Identifiable {
         var id: String?
         var name: String

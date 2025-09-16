@@ -8,7 +8,6 @@
 import SwiftUI
 import Firebase
 import FirebaseAuth
-import FirebaseStorage
 
 struct EditorView: View {
     @EnvironmentObject var vm: AuthViewModel
@@ -16,16 +15,21 @@ struct EditorView: View {
     @State private var name: String = ""
     @State private var selectedImage: UIImage?
     @State private var showPicker = false
-
+    @State private var isSaving = false
+    
     var body: some View {
         NavigationStack {
             ZStack {
-                // 背景を一番下に
+                // 背景
                 MeshView()
                     .ignoresSafeArea()
                 
-                // その上にフォームを置く
                 VStack(spacing: 20) {
+                    Text("Edit Profile")
+                        .font(.system(.title, design: .serif))
+                        .foregroundColor(.primary)
+                    
+                    // プロフィール画像
                     Button {
                         showPicker = true
                     } label: {
@@ -56,36 +60,67 @@ struct EditorView: View {
                     .sheet(isPresented: $showPicker) {
                         ImagePicker(image: $selectedImage)
                     }
-
+                    
+                    // 名前入力
                     TextField("名前を入力", text: $name)
                         .padding()
                         .background(.ultraThinMaterial)
                         .cornerRadius(10)
                         .foregroundColor(.primary)
-
-                    Button("保存") {
-                        let newName = name.isEmpty ? vm.displayName : name
-                        vm.updateUser(name: newName, iconImage: selectedImage) { success in
-                            if success {
-                                dismiss()
-                            } else {
-                                print("更新に失敗しました")
-                            }
+                    
+                    // 保存ボタン
+                    Button {
+                        Task {
+                            await saveProfile()
+                        }
+                    } label: {
+                        if isSaving {
+                            ProgressView()
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                        } else {
+                            Text("保存")
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color.blue)
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
                         }
                     }
+                    .padding()
+                    
+                    // ログアウトボタン
+                    Button("ログアウト") {
+                        Task {
+                            await vm.logout() // ✅ 修正
+                        }
+                    }
+                    .padding(.bottom, 30)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
+                    .foregroundColor(.blue)
+                    .cornerRadius(26)
                 }
+                .cardStyle()
                 .padding()
             }
-            .navigationTitle("プロフィール編集")
-            .navigationBarTitleDisplayMode(.inline)
             .onAppear {
                 name = vm.displayName
             }
+        }
+    }
+    
+    // MARK: - async/await 版保存処理
+    private func saveProfile() async {
+        isSaving = true
+        let newName = name.isEmpty ? vm.displayName : name
+        let success = await vm.updateUser(name: newName, iconImage: selectedImage)
+        isSaving = false
+        
+        if success {
+            dismiss()
+        } else {
+            print("更新に失敗しました")
         }
     }
 }

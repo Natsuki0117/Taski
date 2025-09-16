@@ -17,10 +17,13 @@ struct CalendarView: View {
     @State private var showingAlert = false
     @State private var selectedTask: TaskItem?
     @State private var isShowingSheet = false
+    @Binding var selectedIndex: Int
+    
 
     var body: some View {
         NavigationStack {
             ZStack {
+                // 背景
                 MeshView()
                     .ignoresSafeArea()
 
@@ -30,21 +33,10 @@ struct CalendarView: View {
                         .frame(height: 300)
                         .cardStyle()
 
+                    // 選択日のタスクリスト
                     ScrollView {
                         VStack(spacing: 12) {
-                            if filteredTasks.isEmpty {
-                                Text("タスクがありません")
-                                    .foregroundColor(.secondary)
-                                    .padding()
-                            } else {
-                                ForEach(filteredTasks) { task in
-                                    TaskRow(task: task)
-                                        .onTapGesture {
-                                            selectedTask = task
-                                            showingAlert = true
-                                        }
-                                }
-                            }
+                            taskListView() // タスクリスト表示を別関数に切り出し
                         }
                         .frame(maxWidth: .infinity)
                     }
@@ -53,21 +45,26 @@ struct CalendarView: View {
                 .padding(.bottom, 12)
             }
             .navigationBarTitleDisplayMode(.inline)
+            
+            // AddToDoViewに画面遷移
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: { addToDo = true }) {
-                        Image(systemName: "pencil.and.scribble")
+                        Image(systemName: "plus.fill")
                     }
                 }
             }
+            // AddToDoViewをシートで表示
             .sheet(isPresented: $addToDo) {
-                AddToDoView()
+                AddToDoView(selectedIndex: $selectedIndex)
             }
+            // タスクタイマー表示
             .sheet(isPresented: $isShowingSheet) {
                 if let task = selectedTask {
                     TimerView(task: task)
                 }
             }
+            // タスクをタップしたときのアラート
             .alert(selectedTask?.name ?? "",
                    isPresented: $showingAlert,
                    presenting: selectedTask) { task in
@@ -76,80 +73,44 @@ struct CalendarView: View {
                 Text("\(task.doTime) 分")
             }
             .onAppear {
-                taskStore.fetchTasks()
+                Task {
+                    await taskStore.fetchTasks()
+                }
             }
         }
+        // ナビゲーションバーの背景
         .toolbarBackground(.visible, for: .navigationBar)
         .toolbarBackground(.ultraThinMaterial, for: .navigationBar)
     }
 
-    var filteredTasks: [TaskItem] {
-        taskStore.tasks.filter { !$0.isCompleted &&
-            Calendar.current.isDate($0.dueDate, inSameDayAs: selectedDate)
-        }
-    }
-}
-
-struct TaskRow: View {
-    var task: TaskItem
-
-    var body: some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 4) {
-                Text(task.name)
-                    .font(.headline)
-                    .bold()
-                    .foregroundColor(.primary)
-                Text("\(task.doTime)分 • \(task.dueDate.formatted(.dateTime.month().day()))")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
+    // MARK: - タスクリスト部分を別関数に切り出す
+    @ViewBuilder
+    private func taskListView() -> some View {
+        let tasksForSelectedDate = filteredTasksForSelectedDate()
+        if tasksForSelectedDate.isEmpty {
+            // タスクなし
+            Text("タスクがありません")
+                .foregroundColor(.secondary)
+                .padding()
+        } else {
+            // タスクあり
+            ForEach(tasksForSelectedDate, id: \.id) { task in
+                TaskRowView(task: task)
+                    .onTapGesture {
+                        selectedTask = task
+                        showingAlert = true
+                    }
             }
-            Spacer()
-            Text(task.rank)
-                .font(.caption)
-                .bold()
-                .padding(.vertical, 6)
-                .padding(.horizontal, 14)
-                .background(
-                    LinearGradient(
-                        gradient: Gradient(colors: rankGradient(task.rank)),
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    )
-                )
-                .foregroundColor(.white)
-                .clipShape(Capsule())
-                .shadow(color: rankShadowColor(task.rank).opacity(0.4), radius: 4, x: 0, y: 2)
-        }
-        .padding(8)
-        .frame(maxWidth: .infinity)
-        .background(Color.white.opacity(0.15))
-        .cornerRadius(16)
-        .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
-    }
-
- private func rankGradient(_ rank: String) -> [Color] {
-        switch rank {
-        case "S": return [Color.purple.opacity(0.7), Color.pink.opacity(0.7)]
-        case "A": return [Color.blue.opacity(0.7), Color.cyan.opacity(0.7)]
-        case "B": return [Color.green.opacity(0.7), Color.mint.opacity(0.7)]
-        case "C": return [Color.orange.opacity(0.7), Color.yellow.opacity(0.7)]
-        default: return [Color.gray.opacity(0.5), Color.gray.opacity(0.3)]
         }
     }
 
-    private func rankShadowColor(_ rank: String) -> Color {
-        switch rank {
-        case "S": return .pink
-        case "A": return .cyan
-        case "B": return .green
-        case "C": return .orange
-        default: return .gray
-        }
+    // MARK: - 選択日で未完了タスクを取得
+    private func filteredTasksForSelectedDate() -> [TaskItem] {
+        taskStore.tasks.filter { !$0.isCompleted && Calendar.current.isDate($0.dueDate, inSameDayAs: selectedDate) }
     }
 }
 
-
+// MARK: - FSCalendarラッパー
 struct CalendarWrapper: UIViewRepresentable {
     @Binding var selectedDate: Date
     var tasks: [TaskItem]
@@ -158,10 +119,10 @@ struct CalendarWrapper: UIViewRepresentable {
         let calendar = FSCalendar()
         calendar.locale = Locale(identifier: "ja_JP")
         calendar.firstWeekday = 2
-
         calendar.delegate = context.coordinator
         calendar.dataSource = context.coordinator
 
+        // カレンダー見た目
         calendar.appearance.headerDateFormat = "yyyy年 M月"
         calendar.appearance.headerTitleAlignment = .center
         calendar.appearance.headerMinimumDissolvedAlpha = 0.0
@@ -183,36 +144,41 @@ struct CalendarWrapper: UIViewRepresentable {
         var parent: CalendarWrapper
         init(_ parent: CalendarWrapper) { self.parent = parent }
 
+        // 日付選択
         func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
             parent.selectedDate = date
         }
 
+        // タスクの丸ポチ数
         func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
-            parent.tasks.filter { Calendar.current.isDate($0.dueDate, inSameDayAs: date) }.count
+            let tasksForDate = parent.tasks.filter { !$0.isCompleted && Calendar.current.isDate($0.dueDate, inSameDayAs: date) }
+            return tasksForDate.count
         }
 
+        // 丸ポチの色
         func calendar(_ calendar: FSCalendar,
                       appearance: FSCalendarAppearance,
                       eventDefaultColorsFor date: Date) -> [UIColor]? {
-            let dayTasks = parent.tasks.filter { Calendar.current.isDate($0.dueDate, inSameDayAs: date) }
-            guard !dayTasks.isEmpty else { return nil }
+            let tasksForDate = parent.tasks.filter { !$0.isCompleted && Calendar.current.isDate($0.dueDate, inSameDayAs: date) }
+            guard !tasksForDate.isEmpty else { return nil }
 
+            let color = colorForTasks(tasksForDate)
+            return Array(repeating: color, count: tasksForDate.count)
+        }
+
+        // タスクランクに応じて色を返す
+        private func colorForTasks(_ tasks: [TaskItem]) -> UIColor {
             let rankOrder = ["S","A","B","C"]
-            let sorted = dayTasks.sorted {
-                (rankOrder.firstIndex(of: $0.rank) ?? 999) < (rankOrder.firstIndex(of: $1.rank) ?? 999)
-            }
+            let sorted = tasks.sorted { (rankOrder.firstIndex(of: $0.rank) ?? 999) < (rankOrder.firstIndex(of: $1.rank) ?? 999) }
             let topRank = sorted.first?.rank ?? "C"
 
-            let color: UIColor
             switch topRank {
-            case "S": color = .purple
-            case "A": color = .systemBlue
-            case "B": color = .systemGreen
-            case "C": color = .systemOrange
-            default:  color = .systemGray
+            case "S": return .purple
+            case "A": return .systemBlue
+            case "B": return .systemGreen
+            case "C": return .systemOrange
+            default:  return .systemGray
             }
-            return Array(repeating: color, count: dayTasks.count)
         }
     }
 }
-

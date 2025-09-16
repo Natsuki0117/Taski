@@ -6,53 +6,49 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct TaskListView: View {
     @EnvironmentObject var taskStore: TaskStore
-    @Environment(\.scenePhase) var scenePhase
-    @State private var addToDo = false
     @State private var calendar = false
-    
+    @State private var selectedTask: TaskItem?
+    @State private var showingAlert = false
+    @State private var isShowingSheet = false
+    @Binding var selectedIndex: Int
+
     var body: some View {
+        let incompleteTasks = taskStore.tasks.filter { !$0.isCompleted }
+
         NavigationStack {
             ZStack {
                 MeshView()
                     .ignoresSafeArea()
-                
-                VStack {
-                    
-                    Text("AllTask")
+
+                VStack(spacing: 16) {
+                    Text("All Tasks")
                         .font(.system(.title, design: .serif))
                         .foregroundColor(.primary)
-                    
+
+                    // 半透明長方形
                     RoundedRectangle(cornerRadius: 20)
-                        .fill(Color(.systemBackground).opacity(0.9))
+                        .fill(.ultraThinMaterial)
                         .shadow(radius: 5)
                         .overlay(
                             ScrollView {
                                 LazyVStack(spacing: 12) {
-                                    if taskStore.tasks.isEmpty {
-                                        Text("まずはタスクを登録しよう🎉")
-                                            .foregroundColor(.secondary)
-                                            .padding()
-                                    } else {
-                                        ForEach(taskStore.tasks) { task in
-                                            VStack(alignment: .leading, spacing: 6) {
-                                                Text(task.title)
-                                                    .font(.headline)
-                                                    .foregroundColor(.primary)
-                                                
-                                                Text("期限: \(task.dueDate, formatter: dateFormatter)")
-                                                    .font(.subheadline)
-                                                    .foregroundColor(.secondary)
+                                    Group {
+                                        if incompleteTasks.isEmpty {
+                                            Text("まずはタスクを登録しよう🎉")
+                                                .foregroundColor(.secondary)
+                                                .padding()
+                                        } else {
+                                            ForEach(sortedTasks(tasks: incompleteTasks), id: \.id) { task in
+                                                TaskRowView(task: task)
+                                                    .onTapGesture {
+                                                        selectedTask = task
+                                                        showingAlert = true
+                                                    }
                                             }
-                                            .padding()
-                                            .background(
-                                                RoundedRectangle(cornerRadius: 12)
-                                                    .fill(Color.white)
-                                                    .shadow(color: .black.opacity(0.1), radius: 3, x: 0, y: 1)
-                                            )
-                                            .padding(.horizontal)
                                         }
                                     }
                                 }
@@ -61,37 +57,48 @@ struct TaskListView: View {
                         )
                         .padding()
                 }
-             
-                .toolbar {
-                    
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button(action: { calendar = true }) {
-                            Image(systemName: "calendar")
-                                .font(.title2)
-                        }
-                        .sheet(isPresented: $calendar) {
-                            CalendarView()
-                        }
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: { calendar = true }) {
+                        Image(systemName: "calendar")
+                            .font(.title2)
+                    }
+                    .sheet(isPresented: $calendar) {
+                        CalendarView(selectedIndex: $selectedIndex)
                     }
                 }
-                .onAppear {
-                    taskStore.fetchTasks()
+            }
+            .sheet(isPresented: $isShowingSheet) {
+                if let task = selectedTask {
+                    TimerView(task: task)
+                        .environmentObject(taskStore)
                 }
-                .onChange(of: scenePhase) { newPhase in
-                    if newPhase == .active {
-                        taskStore.fetchTasks()
-                    }
+            }
+            .alert(selectedTask?.name ?? "",
+                   isPresented: $showingAlert,
+                   presenting: selectedTask) { task in
+                Button("Do", role: .destructive) {
+                    isShowingSheet = true
+                }
+            } message: { task in
+                Text("\(task.doTime) 分")
+            }
+            .onAppear {
+                Task {
+                    await taskStore.fetchTasks()
                 }
             }
         }
     }
-    
-    private var dateFormatter: DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .short
-        return formatter
+
+    // ランク順に並び替え
+    private func sortedTasks(tasks: [TaskItem]) -> [TaskItem] {
+        let rankOrder = ["S", "A", "B", "C"]
+        return tasks.sorted { lhs, rhs in
+            let lIndex = rankOrder.firstIndex(of: lhs.rank) ?? 999
+            let rIndex = rankOrder.firstIndex(of: rhs.rank) ?? 999
+            return lIndex < rIndex
+        }
     }
 }
-
-

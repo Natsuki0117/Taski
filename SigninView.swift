@@ -4,7 +4,6 @@
 //
 //  Created by 金井菜津希 on 2025/08/09.
 //
-
 import SwiftUI
 
 struct SigninView: View {
@@ -17,10 +16,6 @@ struct SigninView: View {
 
     var body: some View {
         ZStack {
-//            // 背景
-//            MeshView()
-//                .ignoresSafeArea()
-//            
             VStack(spacing: 20) {
                 Text("Sign In")
                     .font(.system(.title, design: .serif))
@@ -35,7 +30,7 @@ struct SigninView: View {
                         .disableAutocorrection(true)
                 }
                 .foregroundColor(.primary)
-                .cardStyle() // カード風スタイル
+                .cardStyle()
 
                 // パスワード入力
                 HStack {
@@ -59,11 +54,12 @@ struct SigninView: View {
                 
                 // ログインボタン
                 Button("ログイン") {
-                    authVM.signIn(email: email, password: password)
+                    Task {
+                        await authVM.signIn(email: email, password: password)
+                    }
                 }
                 .sheet(isPresented: $main){
                     MainView()
-                    
                 }
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity)
@@ -71,7 +67,6 @@ struct SigninView: View {
                 .background(Color.blue)
                 .cornerRadius(26)
                 .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 5)
-     
 
                 // 新規登録ボタン
                 Button("新規登録") {
