@@ -100,7 +100,7 @@ struct AddToDoView: View {
             let newTask = TaskItem(
                 userId: Auth.auth().currentUser?.uid ?? "",
                 name: title,
-                slider: String(moodLevel),
+                slider: moodLevel,
                 title: title,
                 dueDate: dueDate,
                 doTime: Int(doTime) ?? 30
