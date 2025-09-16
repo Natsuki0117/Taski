@@ -50,7 +50,7 @@ struct CalendarView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: { addToDo = true }) {
-                        Image(systemName: "plus.fill")
+                        Image(systemName: "pencil.and.scribble")
                     }
                 }
             }

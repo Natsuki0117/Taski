@@ -8,11 +8,13 @@ import SwiftUI
 import FirebaseStorage
 
 @main
+//↑これ消したら詰み
 struct Taski: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @StateObject var authVM = AuthViewModel()
     @StateObject var taskStore = TaskStore()
 
+//    特大メイン
     var body: some Scene {
         WindowGroup {
 

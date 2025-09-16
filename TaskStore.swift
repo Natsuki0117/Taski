@@ -10,6 +10,7 @@ import FirebaseFirestore
 import FirebaseAuth
 import SwiftUI
 
+//firebaseの動きの方、更新とかはここ
 @MainActor
 class TaskStore: ObservableObject {
     @Published var tasks: [TaskItem] = []

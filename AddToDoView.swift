@@ -124,7 +124,7 @@ struct AddToDoView: View {
         }
     }
 
-    func moodEmoji(for level: Int) -> String {
+     func moodEmoji(for level: Int) -> String {
         switch level {
         case 0...2: return "😍"
         case 3...4: return "😊"
@@ -135,3 +135,5 @@ struct AddToDoView: View {
         }
     }
 }
+
+

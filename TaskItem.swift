@@ -7,6 +7,7 @@
 import SwiftUI
 import FirebaseFirestore
 
+//firebaseに送るやつ
 struct TaskItem: Codable, Identifiable {
     @DocumentID var id: String?
     var userId: String

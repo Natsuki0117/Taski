@@ -11,7 +11,8 @@ struct MainView: View {
     @EnvironmentObject var taskStore: TaskStore
     @State private var selectedIndex = 0
     
-
+//tabbar関連
+    
     var body: some View {
         ZStack {
             TabView(selection: $selectedIndex) {
