@@ -12,6 +12,9 @@
 		804F79702D297F0900F25083 /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804F796F2D297F0900F25083 /* TimerView.swift */; };
 		804F79752D2C258600F25083 /* Confetti in Frameworks */ = {isa = PBXBuildFile; productRef = 804F79742D2C258600F25083 /* Confetti */; };
 		80656B782E778EA2000F315B /* TaskRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80656B772E778EA2000F315B /* TaskRowView.swift */; };
+		80656B802E7B665B000F315B /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80656B7F2E7B665B000F315B /* ResultView.swift */; };
+		80656B822E7B77DC000F315B /* UserAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80656B812E7B77DC000F315B /* UserAnalysis.swift */; };
+		80656B842E7B9AD8000F315B /* TaskDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80656B832E7B9AD8000F315B /* TaskDetailView.swift */; };
 		807BA0B92C6D218F002EBB9B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 807BA0B82C6D218F002EBB9B /* Assets.xcassets */; };
 		807BA0BC2C6D218F002EBB9B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 807BA0BB2C6D218F002EBB9B /* Preview Assets.xcassets */; };
 		807BA0D52C6D233C002EBB9B /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807BA0D42C6D233C002EBB9B /* AuthViewModel.swift */; };
@@ -49,6 +52,9 @@
 		804453342E76970C001AE0A5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		804F796F2D297F0900F25083 /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
 		80656B772E778EA2000F315B /* TaskRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskRowView.swift; sourceTree = "<group>"; };
+		80656B7F2E7B665B000F315B /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
+		80656B812E7B77DC000F315B /* UserAnalysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAnalysis.swift; sourceTree = "<group>"; };
+		80656B832E7B9AD8000F315B /* TaskDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailView.swift; sourceTree = "<group>"; };
 		807BA0B12C6D218C002EBB9B /* Taski.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Taski.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		807BA0B82C6D218F002EBB9B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		807BA0BB2C6D218F002EBB9B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -116,9 +122,12 @@
 				80F088DF2E6D2FD000EB49BF /* TestView.swift */,
 				808DEBB62E4CE607008AF99C /* InitialSetupView.swift */,
 				804F796F2D297F0900F25083 /* TimerView.swift */,
+				80656B7F2E7B665B000F315B /* ResultView.swift */,
+				80656B812E7B77DC000F315B /* UserAnalysis.swift */,
 				807BA0F42C75F1A0002EBB9B /* TaskItem.swift */,
 				807BA0DF2C6D28B0002EBB9B /* MainView.swift */,
 				808DEBB22E47A840008AF99C /* AccountView.swift */,
+				80656B832E7B9AD8000F315B /* TaskDetailView.swift */,
 				808DEBB82E643621008AF99C /* PieChartView.swift */,
 				808DEBB42E4CE0B4008AF99C /* TaskStore.swift */,
 				808DEBB02E47A7B8008AF99C /* Taski.swift */,
@@ -245,11 +254,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				808DEBB92E643621008AF99C /* PieChartView.swift in Sources */,
+				80656B802E7B665B000F315B /* ResultView.swift in Sources */,
 				80A88CA82E6F9BEE00890565 /* TaskListView.swift in Sources */,
 				808DEBAF2E4799F2008AF99C /* SignupView.swift in Sources */,
 				808DEBB12E47A7B8008AF99C /* Taski.swift in Sources */,
 				808DEBAB2E46790E008AF99C /* ImagePicker .swift in Sources */,
+				80656B822E7B77DC000F315B /* UserAnalysis.swift in Sources */,
 				808DEB982E466E30008AF99C /* MeshView.swift in Sources */,
+				80656B842E7B9AD8000F315B /* TaskDetailView.swift in Sources */,
 				808DEBB32E47A840008AF99C /* AccountView.swift in Sources */,
 				804F79702D297F0900F25083 /* TimerView.swift in Sources */,
 				808DEBB72E4CE607008AF99C /* InitialSetupView.swift in Sources */,

@@ -7,72 +7,101 @@
 
 import SwiftUI
 import Combine
-import FirebaseFirestore
-import Charts
 
 struct TimerView: View {
-    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var taskStore: TaskStore
+    @Environment(\.dismiss) var dismiss
 
     @State private var counter: Int = 0
     @State private var timerCancellable: AnyCancellable?
     @State private var showEmotionInput = false
     @State private var emotionLevel: Int = 5
-    @State private var showResultView = false
+    @State private var paused = false
+    @State private var showPauseOptions = false
 
     var task: TaskItem
-    var totalSeconds: Int { task.doTime * 60 }
+    var location: String = "自宅"
 
-    init(task: TaskItem) {
-        self.task = task
-    }
+    var totalSeconds: Int { max(task.doTime * 60, 1) }
 
     var body: some View {
         ZStack {
-            MeshView()
-                .ignoresSafeArea()
+            // 背景
+            LinearGradient(
+                gradient: Gradient(colors: [Color.blue.opacity(0.4), Color.purple.opacity(0.6)]),
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            .ignoresSafeArea()
 
-            VStack(spacing: 40) {
+            VStack(spacing: 50) {
+                Text("集中して頑張りましょう📣")
+                    .font(.title2.bold())
+                    .foregroundColor(.white)
+
+                // タイマーの円
                 ZStack {
                     Circle()
-                        .stroke(Color.white.opacity(0.2), lineWidth: 15)
-                        .frame(width: 260, height: 260)
+                        .stroke(lineWidth: 16)
+                        .opacity(0.3)
+                        .foregroundColor(.white)
 
                     Circle()
-                        .trim(from: 0, to: min(CGFloat(counter) / CGFloat(totalSeconds), 1.0))
+                        .trim(from: 0, to: CGFloat(min(Double(counter)/Double(totalSeconds), 1.0)))
                         .stroke(
                             AngularGradient(
-                                gradient: Gradient(colors: [Color.purple.opacity(0.7), Color.blue.opacity(0.7)]),
+                                gradient: Gradient(colors: [Color.cyan, Color.purple]),
                                 center: .center
                             ),
-                            style: StrokeStyle(lineWidth: 15, lineCap: .round)
+                            style: StrokeStyle(lineWidth: 16, lineCap: .round)
                         )
                         .rotationEffect(.degrees(-90))
-                        .frame(width: 260, height: 260)
-                        .animation(.easeInOut(duration: 0.5), value: counter)
+                        .animation(.linear(duration: 0.2), value: counter)
 
-                    Text(stopwatchString())
+                    Text(String(format: "%02d:%02d", counter/60, counter%60))
                         .font(.system(size: 60, weight: .bold, design: .rounded))
-                        .monospacedDigit()
                         .foregroundColor(.white)
                 }
+                .frame(width: 250, height: 250) // 円を大きく
 
-                Button {
-                    showEmotionInput = true
-                } label: {
-                    Text("✨ 終わった！ ✨")
-                        .bold()
-                        .frame(width: 200, height: 48)
-                        .background(
-                            LinearGradient(
-                                colors: [Color.purple.opacity(0.8), Color.blue.opacity(0.8)],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
+                // 操作ボタン
+                HStack(spacing: 30) {
+                    Button(paused ? "再開" : "一時停止") {
+                        paused.toggle()
+                        if paused {
+                            timerCancellable?.cancel()
+                            showPauseOptions = true
+                        } else {
+                            startTimer()
+                        }
+                    }
+                    .padding()
+                    .frame(width: 140)
+                    .background(
+                        LinearGradient(
+                            gradient: Gradient(colors: [Color.blue.opacity(0.8), Color.purple.opacity(0.8)]),
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
                         )
-                        .foregroundColor(.white)
-                        .cornerRadius(24)
-                        .shadow(radius: 5)
+                    )
+                    .foregroundColor(.white)
+                    .cornerRadius(15)
+
+                    Button("終了") {
+                        timerCancellable?.cancel()
+                        showEmotionInput = true
+                    }
+                    .padding()
+                    .frame(width: 140)
+                    .background(
+                        LinearGradient(
+                            gradient: Gradient(colors: [Color.pink.opacity(0.8), Color.purple.opacity(0.8)]),
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .foregroundColor(.white)
+                    .cornerRadius(15)
                 }
             }
             .padding()
@@ -80,231 +109,94 @@ struct TimerView: View {
         .onAppear { startTimer() }
         .onDisappear { timerCancellable?.cancel() }
 
-        // 気分入力
-        .sheet(isPresented: $showEmotionInput) {
-            ZStack {
-                MeshView()
-                VStack(spacing: 20) {
-                    Text("今の気分を教えてください")
-                        .font(.title2)
-                        .bold()
-
-                    Slider(value: Binding(
-                        get: { Double(emotionLevel) },
-                        set: { emotionLevel = Int($0) }
-                    ), in: 0...10, step: 1)
-                        .tint(.orange)
-
-                    Text("レベル: \(emotionLevel) \(emotionEmoji(for: emotionLevel))")
-
-                    Button("保存") {
-                        timerCancellable?.cancel() // タイマー停止
-                        markTaskCompleted(emotion: emotionLevel)
-                        showEmotionInput = false
-                        showResultView = true
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(
-                        LinearGradient(colors: [Color.purple.opacity(0.7), Color.blue.opacity(0.7)],
-                                       startPoint: .topLeading,
-                                       endPoint: .bottomTrailing)
-                    )
-                    .foregroundColor(.white)
-                    .cornerRadius(12)
-                }
-                .padding()
-                .background(.ultraThinMaterial)
-                .cornerRadius(24)
-                .padding()
+        // 一時停止時の選択肢
+        .alert("一時停止", isPresented: $showPauseOptions) {
+            Button("休憩する") { showPauseOptions = false }
+            Button("タスク終了") {
+                showPauseOptions = false
+                showEmotionInput = true
+            }
+            Button("再開", role: .cancel) {
+                showPauseOptions = false
+                startTimer()
             }
         }
 
-        // 結果ビュー
-        .fullScreenCover(isPresented: $showResultView) {
-            ResultView(
-                task: task,
-                actualSeconds: counter,
-                finalEmotion: emotionLevel,
-                dismissParent: dismiss
-            )
+        // タスク終了後に難易度入力
+        .sheet(isPresented: $showEmotionInput) {
+            VStack(spacing: 20) {
+                Text("タスクの難易度を振りかえろう")
+                    .font(.title2.bold())
+
+                Slider(
+                    value: Binding(
+                        get: { Double(emotionLevel) },
+                        set: { emotionLevel = Int($0) }
+                    ),
+                    in: 0...5,
+                    step: 1
+                )
+                .tint(.orange)
+
+                Text("レベル: \(emotionLevel)")
+
+                Button("保存") {
+                    saveSession(finalEmotion: emotionLevel)
+                    showEmotionInput = false
+                    dismiss() // TimerViewを閉じる
+                }
+                .padding()
+                .frame(maxWidth: .infinity)
+                .background(Color.blue.opacity(0.8))
+                .foregroundColor(.white)
+                .cornerRadius(15)
+                .padding(.horizontal)
+            }
+            .padding()
         }
     }
 
     // MARK: - タイマー開始
     func startTimer() {
         timerCancellable?.cancel()
-        counter = 0
         timerCancellable = Timer.publish(every: 1, on: .main, in: .common)
             .autoconnect()
             .sink { _ in
-                counter += 1
-            }
-    }
-
-    // MARK: - タスク完了処理
-    func markTaskCompleted(emotion: Int) {
-        guard let id = task.id else { return }
-        let db = Firestore.firestore()
-        db.collection("tasks").document(id).updateData([
-            "isCompleted": true,
-            "emotionLevel": emotion,
-            "actualSeconds": counter
-        ]) { error in
-            if let error = error {
-                print("Error updating task: \(error.localizedDescription)")
-            } else {
-                if let index = taskStore.tasks.firstIndex(where: { $0.id == task.id }) {
-                    taskStore.tasks[index].isCompleted = true
-                    taskStore.tasks[index].emotionLevel = emotion
+                if counter < totalSeconds {
+                    counter += 1
+                } else {
+                    timerCancellable?.cancel()
+                    showEmotionInput = true
                 }
             }
-        }
     }
 
-    // MARK: - 経過時間表示
-    func stopwatchString() -> String {
-        let minutes = counter / 60
-        let seconds = counter % 60
-        return String(format: "%02d:%02d", minutes, seconds)
-    }
+    func saveSession(finalEmotion: Int? = nil) {
+        guard let index = taskStore.tasks.firstIndex(where: { $0.id == task.id }) else { return }
 
-    // MARK: - 絵文字変換
-    func emotionEmoji(for level: Int) -> String {
-        switch level {
-        case 0...2: return "😍"
-        case 3...4: return "😊"
-        case 5...6: return "😐"
-        case 7...8: return "😣"
-        case 9...10: return "😤"
-        default: return "❓"
-        }
-    }
-}
+        let session = TaskItem.TaskSession(
+            startedAt: Date().addingTimeInterval(-Double(counter)),
+            endedAt: Date(),
+            duration: counter,
+            emotionLevel: finalEmotion ?? 5,
+            location: location,
+            difficulty: task.slider
+        )
 
-// MARK: - 結果ビュー
-struct ResultView: View {
-    var task: TaskItem
-    var actualSeconds: Int
-    var finalEmotion: Int
-    var dismissParent: DismissAction
+        // ローカル更新
+        taskStore.tasks[index].sessions.append(session)
+        taskStore.tasks[index].isCompleted = true
+        counter = 0
 
-    var body: some View {
-        ZStack {
-            MeshView()
-                .ignoresSafeArea()
-
-            ScrollView {
-                VStack(spacing: 30) {
-                    Text("🌸 タスク結果 🌸")
-                        .font(.largeTitle.bold())
-                        .foregroundColor(.white)
-
-                    // 時間比較（縦棒グラフ）
-                    VStack(spacing: 16) {
-                        Text("⏰ 予定時間と実績時間")
-                            .font(.headline)
-                            .foregroundColor(.blue)
-
-                        Chart {
-                            BarMark(
-                                x: .value("種類", "予定"),
-                                y: .value("時間（秒）", task.doTime * 60)
-                            )
-                            .foregroundStyle(
-                                LinearGradient(colors: [Color.purple.opacity(0.7), Color.blue.opacity(0.7)],
-                                               startPoint: .top,
-                                               endPoint: .bottom)
-                            )
-
-                            BarMark(
-                                x: .value("種類", "実際"),
-                                y: .value("時間（秒）", actualSeconds)
-                            )
-                            .foregroundStyle(
-                                LinearGradient(colors: [Color.blue.opacity(0.7), Color.purple.opacity(0.7)],
-                                               startPoint: .top,
-                                               endPoint: .bottom)
-                            )
-                        }
-                        .frame(height: 200)
-
-                        VStack(spacing: 6) {
-                            Text("予定: \(task.doTime)分")
-                            Text("実際: \(actualSeconds / 60)分 \(actualSeconds % 60)秒")
-                            let diff = actualSeconds - task.doTime * 60
-                            Text("差分: \(diff >= 0 ? "+" : "")\(diff)秒")
-                                .foregroundColor(.gray)
-                        }
-                        .foregroundColor(.gray)
-                    }
-                    .padding()
-                    .background(.ultraThinMaterial)
-                    .cornerRadius(24)
-
-                    // 感情比較（縦棒グラフ）
-                    VStack(spacing: 16) {
-                        Text("💭 気分の変化")
-                            .font(.headline)
-                            .foregroundColor(.blue)
-
-                        Chart {
-                            BarMark(
-                                x: .value("種類", "開始時"),
-                                y: .value("レベル", Int(task.slider) ?? 0)
-                            )
-                            .foregroundStyle(
-                                LinearGradient(colors: [Color.purple.opacity(0.7), Color.blue.opacity(0.7)],
-                                               startPoint: .top,
-                                               endPoint: .bottom)
-                            )
-
-                            BarMark(
-                                x: .value("種類", "終了時"),
-                                y: .value("レベル", finalEmotion)
-                            )
-                            .foregroundStyle(
-                                LinearGradient(colors: [Color.blue.opacity(0.7), Color.purple.opacity(0.7)],
-                                               startPoint: .top,
-                                               endPoint: .bottom)
-                            )
-                           
-                        }
-                        .frame(height: 200)
-
-                        VStack(spacing: 6) {
-                            Text("開始時: \(task.slider)/10 \(emotionEmoji(for: Int(task.slider) ?? 0))")
-                            Text("終了時: \(finalEmotion)/10 \(emotionEmoji(for: finalEmotion))")
-                        }
-                        .foregroundColor(.gray)
-                    }
-                    .padding()
-                    .background(.ultraThinMaterial)
-                    .cornerRadius(24)
-
-                    Button("閉じる") {
-                        dismissParent()
-                    }
-                    .frame(width: 200, height: 48)
-                    .background(Color.blue.opacity(0.7))
-                    .foregroundColor(.white)
-                    .cornerRadius(24)
-                }
-                .padding()
+        // Firestoreに保存
+        Task {
+            do {
+                try await taskStore.updateTask(taskStore.tasks[index])
+            } catch {
+                print("Firestore更新失敗: \(error)")
             }
         }
     }
 
-    // 絵文字変換（ResultView側でも使えるように）
-    func emotionEmoji(for level: Int) -> String {
-        switch level {
-        case 0...2: return "😍"
-        case 3...4: return "😊"
-        case 5...6: return "😐"
-        case 7...8: return "😣"
-        case 9...10: return "😤"
-        default: return "❓"
-        }
-    }
-}
 
+}

@@ -57,6 +57,7 @@ struct EditorView: View {
                                 .overlay(Text("画像選択").foregroundColor(.white))
                         }
                     }
+                  
                     .sheet(isPresented: $showPicker) {
                         ImagePicker(image: $selectedImage)
                     }

@@ -6,14 +6,14 @@
 //
 
 import SwiftUI
-import FirebaseAuth
 
 struct TaskListView: View {
     @EnvironmentObject var taskStore: TaskStore
     @State private var calendar = false
     @State private var selectedTask: TaskItem?
-    @State private var showingAlert = false
-    @State private var isShowingSheet = false
+    @State private var showLocationPicker = false
+    @State private var selectedLocation = "家"
+    @State private var isShowingTimer = false
     @Binding var selectedIndex: Int
 
     var body: some View {
@@ -29,26 +29,23 @@ struct TaskListView: View {
                         .font(.system(.title, design: .serif))
                         .foregroundColor(.primary)
 
-                    // 半透明長方形
                     RoundedRectangle(cornerRadius: 20)
                         .fill(.ultraThinMaterial)
                         .shadow(radius: 5)
                         .overlay(
                             ScrollView {
                                 LazyVStack(spacing: 12) {
-                                    Group {
-                                        if incompleteTasks.isEmpty {
-                                            Text("まずはタスクを登録しよう🎉")
-                                                .foregroundColor(.secondary)
-                                                .padding()
-                                        } else {
-                                            ForEach(sortedTasks(tasks: incompleteTasks), id: \.id) { task in
-                                                TaskRowView(task: task)
-                                                    .onTapGesture {
-                                                        selectedTask = task
-                                                        showingAlert = true
-                                                    }
-                                            }
+                                    if incompleteTasks.isEmpty {
+                                        Text("まずはタスクを登録しよう🎉")
+                                            .foregroundColor(.secondary)
+                                            .padding()
+                                    } else {
+                                        ForEach(sortedTasks(tasks: incompleteTasks), id: \.id) { task in
+                                            TaskRowView(task: task)
+                                                .onTapGesture {
+                                                    selectedTask = task
+                                                    showLocationPicker = true
+                                                }
                                         }
                                     }
                                 }
@@ -69,20 +66,22 @@ struct TaskListView: View {
                     }
                 }
             }
-            .sheet(isPresented: $isShowingSheet) {
+
+            // 場所選択 confirmationDialog
+            .confirmationDialog("どこでやる？", isPresented: $showLocationPicker, titleVisibility: .visible) {
+                Button("家") { startTimer(location: "家") }
+                Button("学校") { startTimer(location: "学校") }
+                Button("図書館") { startTimer(location: "図書館") }
+                Button("カフェ") { startTimer(location: "カフェ") }
+                Button("キャンセル", role: .cancel) { }
+            }
+
+            // タイマー画面
+            .fullScreenCover(isPresented: $isShowingTimer) {
                 if let task = selectedTask {
-                    TimerView(task: task)
+                    TimerView(task: task, location: selectedLocation)
                         .environmentObject(taskStore)
                 }
-            }
-            .alert(selectedTask?.name ?? "",
-                   isPresented: $showingAlert,
-                   presenting: selectedTask) { task in
-                Button("Do", role: .destructive) {
-                    isShowingSheet = true
-                }
-            } message: { task in
-                Text("\(task.doTime) 分")
             }
             .onAppear {
                 Task {
@@ -100,5 +99,11 @@ struct TaskListView: View {
             let rIndex = rankOrder.firstIndex(of: rhs.rank) ?? 999
             return lIndex < rIndex
         }
+    }
+
+    // 選択した場所でタイマーを開始
+    private func startTimer(location: String) {
+        selectedLocation = location
+        isShowingTimer = true
     }
 }

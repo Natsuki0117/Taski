@@ -10,7 +10,7 @@ import FirebaseFirestore
 import FirebaseAuth
 import SwiftUI
 
-//firebaseの動きの方、更新とかはここ
+
 @MainActor
 class TaskStore: ObservableObject {
     @Published var tasks: [TaskItem] = []
@@ -31,42 +31,31 @@ class TaskStore: ObservableObject {
         }
     }
 
-    /// タスクを追加
     func addTask(_ task: TaskItem) async throws {
         let docRef = Firestore.firestore().collection("tasks").document()
         try docRef.setData(from: task)
-        // ローカルにも追加
         tasks.append(task)
     }
 
-    /// タスクを更新
     func updateTask(_ task: TaskItem) async throws {
         guard let id = task.id else { return }
         let docRef = Firestore.firestore().collection("tasks").document(id)
         try docRef.setData(from: task, merge: true)
-
-        // ローカルにも反映
         if let index = tasks.firstIndex(where: { $0.id == task.id }) {
             tasks[index] = task
         }
     }
 
-    /// タスクを削除
     func deleteTask(_ task: TaskItem) async throws {
         guard let id = task.id else { return }
         let docRef = Firestore.firestore().collection("tasks").document(id)
         try await docRef.delete()
-
-        // ローカルからも削除
         tasks.removeAll { $0.id == task.id }
     }
-    
-    /// タスクを延長
+
     func extendTask(_ task: TaskItem, minutes: Int) {
         guard let index = tasks.firstIndex(where: { $0.id == task.id }) else { return }
         tasks[index].extendedMinutes += minutes
-        
-        // Firestoreにも反映
         if let id = task.id {
             let docRef = Firestore.firestore().collection("tasks").document(id)
             docRef.updateData(["extendedMinutes": tasks[index].extendedMinutes]) { error in

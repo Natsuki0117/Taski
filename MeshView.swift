@@ -48,3 +48,36 @@ extension View {
 }
 
 
+
+struct CardView<Content: View>: View {
+    var title: String
+    var content: Content
+
+    init(title: String, @ViewBuilder content: () -> Content) {
+        self.title = title
+        self.content = content()
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(title)
+                .font(.headline)
+            content
+        }
+        .padding()
+        .frame(maxWidth: .infinity)
+        .background(.ultraThinMaterial)
+        .cornerRadius(16)
+        .shadow(radius: 3)
+    }
+}
+
+extension CardView where Content == Text {
+    init(title: String, content: String) {
+        self.title = title
+        self.content = Text(content).font(.body)
+    }
+}
+
+
+

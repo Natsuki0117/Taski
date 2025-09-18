@@ -29,25 +29,30 @@ struct AddToDoView: View {
                         .font(.system(.title, design: .serif))
                         .foregroundColor(.primary)
 
-//                    こっからタスク追加
+                    // タイトル入力
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("✒️ タイトル").font(.headline).foregroundColor(.gray)
-                        TextField("例:数学の課題", text: $title)
+                        Text("✒️ タイトル")
+                            .font(.headline)
+                            .foregroundColor(.gray)
+                        TextField("例: 数学の課題", text: $title)
                             .font(.title3)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .foregroundColor(.primary)
+                            .foregroundColor(.black)
                     }
+                   
                     .cardStyle()
 
                     // 期限
                     VStack(alignment: .leading) {
-                        Text("📅 期限を選ぼう").foregroundColor(.gray).font(.headline)
+                        Text("📅 期限を選ぼう")
+                            .foregroundColor(.gray)
+                            .font(.headline)
                         DatePicker("", selection: $dueDate, displayedComponents: .date)
                             .datePickerStyle(GraphicalDatePickerStyle())
                     }
                     .cardStyle()
 
-                    // 難易度
+                    // 難易度（感情負荷）
                     VStack(spacing: 8) {
                         Text("⚖️ タスクの難易度")
                             .foregroundColor(.gray)
@@ -56,7 +61,7 @@ struct AddToDoView: View {
                         Slider(value: Binding(
                             get: { Double(moodLevel) },
                             set: { moodLevel = Int($0.rounded()) }
-                        ), in: 0...10, step: 1)
+                        ), in: 0...5, step: 1)
                         Text(moodEmoji(for: moodLevel))
                             .font(.system(size: 40))
                         Text("レベル: \(moodLevel)")
@@ -65,15 +70,19 @@ struct AddToDoView: View {
                     }
                     .cardStyle()
 
-                    // かかる時間
+                    // 所要時間
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("⏰ かかる時間（分）").font(.headline).foregroundColor(.gray)
+                        Text("⏰ かかる時間（分）")
+                            .font(.headline)
+                            .foregroundColor(.gray)
                         TextField("30", text: $doTime)
+                            .foregroundColor(.black)
                             .font(.title3)
                             .keyboardType(.numberPad)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .foregroundColor(.primary)
+                        
                     }
+                    
                     .cardStyle()
 
                     // 保存ボタン
@@ -94,7 +103,7 @@ struct AddToDoView: View {
         }
     }
 
-//  保存ボタン押した時の処理
+    // MARK: - 保存処理
     func saveTask() {
         Task {
             let newTask = TaskItem(
@@ -107,14 +116,12 @@ struct AddToDoView: View {
             )
             do {
                 try await taskStore.addTask(newTask)
-                // 保存後のUI更新
                 await MainActor.run {
-                    // フィールドを初期化
+                    // 入力リセット
                     title = ""
                     doTime = ""
                     moodLevel = 5
                     dueDate = Date()
-                    
                     selectedIndex = 0
                     dismiss()
                 }
@@ -124,7 +131,8 @@ struct AddToDoView: View {
         }
     }
 
-     func moodEmoji(for level: Int) -> String {
+    // MARK: - 絵文字表示
+    func moodEmoji(for level: Int) -> String {
         switch level {
         case 0...2: return "😍"
         case 3...4: return "😊"
@@ -135,5 +143,3 @@ struct AddToDoView: View {
         }
     }
 }
-
-
